@@ -36,8 +36,18 @@ class SsoTokenService
         $access = $user->appAccesses()->where('app_id', $app->id)->first();
 
         // 3. Verify User Access
-        if (!$access) {
+        $isAdmin = $user->isAdmin();
+
+        if (!$access && !$isAdmin) {
             throw new AccessDeniedHttpException("User does not have access to '{$app->name}'.");
+        }
+
+        // Determine Role
+        $role = 'user';
+        if ($isAdmin) {
+            $role = 'super_admin';
+        } elseif ($access && $access->role) {
+            $role = $access->role->key;
         }
 
         // 4. Generate JWT - use the role key (e.g. 'super_admin') as the claim
@@ -45,7 +55,7 @@ class SsoTokenService
             userId: (string) $user->id,
             email: $user->email,
             appSlug: $app->slug,
-            role: $access->role ? $access->role->key : 'user', // Extract the string key
+            role: $role, // Extract the string key
             audience: $this->getAudienceFromDomain($app->domain)
         );
 

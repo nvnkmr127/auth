@@ -19,6 +19,7 @@ class AppManager extends Component
     public $name = '';
     public $slug = '';
     public $domain = '';
+    public $sync_token = '';
     public $status = 'active';
 
     protected function rules()
@@ -27,6 +28,7 @@ class AppManager extends Component
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:apps,slug,' . ($this->editId ?? 'NULL'),
             'domain' => 'nullable|url|max:255',
+            'sync_token' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive,maintenance',
         ];
     }
@@ -45,10 +47,77 @@ class AppManager extends Component
         $this->name = $app->name;
         $this->slug = $app->slug;
         $this->domain = $app->domain;
+        $this->sync_token = $app->sync_token;
         $this->status = $app->status;
 
         $this->isEditing = true;
         $this->showModal = true;
+    }
+
+    public function syncConfig($id)
+    {
+        $app = App::findOrFail($id);
+
+        if (empty($app->domain) || empty($app->sync_token)) {
+            $this->dispatch('notify', message: 'Domain and Sync Token are required to sync.', type: 'error');
+            return;
+        }
+
+        try {
+            $url = rtrim($app->domain, '/') . '/api/sso/sync';
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'X-SSO-Sync-Token' => $app->sync_token
+            ])->get($url);
+
+            if ($response->failed()) {
+                throw new \Exception("Sync failed: " . ($response->json('error') ?? $response->status()));
+            }
+
+            $data = $response->json();
+            $roles = $data['roles'] ?? [];
+            $permissions = $data['permissions'] ?? [];
+            $groups = $data['groups'] ?? [];
+
+            // 1. Sync Permissions
+            foreach ($permissions as $key => $description) {
+                // Find group
+                $group = 'General';
+                foreach ($groups as $groupName => $keys) {
+                    if (in_array($key, $keys)) {
+                        $group = $groupName;
+                        break;
+                    }
+                }
+
+                \App\Models\Permission::updateOrCreate(
+                    ['key' => $key],
+                    [
+                        'name' => ucfirst(str_replace('_', ' ', $key)),
+                        'group' => $group
+                    ]
+                );
+            }
+
+            // 2. Sync Roles for this App
+            foreach ($roles as $roleKey => $info) {
+                $role = \App\Models\Role::updateOrCreate(
+                    ['key' => $roleKey, 'app_id' => $app->id],
+                    [
+                        'name' => $info['name'] ?? ucfirst($roleKey),
+                        'description' => $info['description'] ?? '',
+                        'is_global' => false,
+                    ]
+                );
+
+                // For now, we'll leave actual permission-to-role linking to manual check
+                // or we could implement a full mapping if the API provides it.
+            }
+
+            $this->dispatch('notify', message: "Successfully synced " . count($roles) . " roles from {$app->name}.");
+
+        } catch (\Exception $e) {
+            $this->dispatch('notify', message: 'Sync Error: ' . $e->getMessage(), type: 'error');
+        }
     }
 
     public function save(AuditService $audit)
@@ -63,6 +132,7 @@ class AppManager extends Component
                 'name' => $this->name,
                 'slug' => $this->slug,
                 'domain' => $this->domain,
+                'sync_token' => $this->sync_token,
                 'status' => $this->status,
             ]);
 
@@ -73,6 +143,7 @@ class AppManager extends Component
                 'name' => $this->name,
                 'slug' => $this->slug,
                 'domain' => $this->domain,
+                'sync_token' => $this->sync_token,
                 'status' => $this->status,
             ]);
 
@@ -97,6 +168,7 @@ class AppManager extends Component
         $this->name = '';
         $this->slug = '';
         $this->domain = '';
+        $this->sync_token = '';
         $this->status = 'active';
         $this->editId = null;
         $this->resetValidation();

@@ -95,6 +95,14 @@
                                 @endif
                             </td>
                             <td class="whitespace-nowrap py-6 pl-3 pr-10 text-right space-x-2">
+                                <button wire:click="syncConfig({{ $app->id }})" title="Sync Roles & Permissions"
+                                    class="p-2 text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all active:scale-95">
+                                    <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                </button>
                                 <button wire:click="edit({{ $app->id }})"
                                     class="p-2 text-slate-400 hover:text-primary hover:bg-primary-light rounded-xl transition-all active:scale-95">
                                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -193,8 +201,22 @@
                                 URL (Domain)</label>
                             <input wire:model="domain" type="url"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
-                                placeholder="https://app.example.com/sso">
+                                placeholder="https://app.example.com">
                             @error('domain') <span
+                                class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Sync
+                                Token (Secret)</label>
+                            <input wire:model="sync_token" type="text"
+                                class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
+                                placeholder="Enter a secret token for syncing roles">
+                            <p class="text-[9px] text-slate-400 mt-2 ml-1">Must match 'sync_token' in Consumer app
+                                config.</p>
+                            @error('sync_token') <span
                                 class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
                             @enderror
                         </div>

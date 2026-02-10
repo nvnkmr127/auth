@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-primary: #7c3aed;
+    --color-primary-light: #f5f3ff;
+    --color-primary-dark: #6d28d9;
+
+    --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+@layer base {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        @apply tracking-tight font-extrabold text-slate-900;
+        letter-spacing: -0.02em;
+    }
+
+    h1 {
+        @apply text-3xl sm:text-4xl lg:text-5xl leading-[1.1];
+    }
+
+    h2 {
+        @apply text-2xl sm:text-3xl lg:text-4xl leading-tight;
+    }
+
+    h3 {
+        @apply text-xl sm:text-2xl lg:text-3xl leading-snug;
+    }
+
+    h4 {
+        @apply text-lg sm:text-xl lg:text-2xl leading-normal;
+    }
+
+    h5 {
+        @apply text-base sm:text-lg lg:text-xl leading-relaxed;
+    }
+
+    p {
+        @apply leading-relaxed text-slate-500 font-medium;
+    }
+
+    .tracking-widest {
+        letter-spacing: 0.1em;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+    }
+}
+
+@layer components {
+    .glass-card {
+        @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-premium;
+    }
+
+    .premium-card {
+        @apply bg-white border border-slate-100 shadow-premium transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+    }
+
+    .anime-pulse {
+        animation: premium-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes premium-pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: .7;
+            transform: scale(1.1);
+        }
+    }
+}

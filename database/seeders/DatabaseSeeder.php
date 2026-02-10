@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 
         // 2. RBAC (Permissions & Roles)
         $this->call(PermissionSeeder::class);
+        $this->call(RoleSeeder::class);
         $this->call(RolePermissionSeeder::class);
 
         // 3. User & Admin Account

@@ -26,11 +26,12 @@ class CheckAppAccess
         $user = Auth::user();
 
         // 2. Identify Current App
-        // In a real multi-tenant/SSO environment, this might come from:
-        // - Subdomain
-        // - A configured 'APP_SLUG' in .env
-        // - Or if this is the IDP itself, maybe we skip this check or check for 'admin' app access.
+        // If user is a super admin, we bypass app-specific access checks.
+        if ($user->isAdmin()) {
+            return $next($request);
+        }
 
+        // 3. Identify Current App slug
         $currentAppSlug = env('APP_SLUG');
 
         if (!$currentAppSlug) {

@@ -31,7 +31,7 @@ class JwtService
      * @return string
      * @throws RuntimeException
      */
-    public function generateToken(string $userId, string $email, string $appSlug, string $role, string $audience): string
+    public function generateToken(string $userId, string $email, string $name, string $appSlug, string $role, string $audience): string
     {
         if (!file_exists($this->privateKeyPath)) {
             throw new RuntimeException("JWT Private Key not found at: {$this->privateKeyPath}. Please generate keys.");
@@ -46,6 +46,7 @@ class JwtService
             'iss' => config('jwt.app_url'), // Issuer
             'sub' => $userId,              // Subject (user_id)
             'email' => $email,             // User Email
+            'name' => $name,               // User Name
             'app_slug' => $appSlug,        // Application Slug
             'role' => $role,               // User Role in that App
             'aud' => $audience,            // Audience (usually the destination domain/app)

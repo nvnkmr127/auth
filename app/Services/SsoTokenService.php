@@ -54,6 +54,7 @@ class SsoTokenService
         $token = $this->jwtService->generateToken(
             userId: (string) $user->id,
             email: $user->email,
+            name: $user->name,
             appSlug: $app->slug,
             role: $role, // Extract the string key
             audience: $this->getAudienceFromDomain($app->domain)

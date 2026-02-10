@@ -72,17 +72,22 @@ class SsoTokenService
     protected function getAudienceFromDomain(?string $domain): string
     {
         if (empty($domain)) {
-            // Fallback or throw error depending on strictness.
-            // For now, assuming domain required for SSO.
             throw new InvalidArgumentException("App domain is not configured.");
         }
 
         // Ensure scheme for consistency
-        if (!preg_match("~^(?:f|ht)tps?://~i", $domain)) {
-            return "https://" . $domain;
+        $url = $domain;
+        if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+            $url = "https://" . $url;
         }
 
-        return $domain;
+        // Parse and return only protocol + host (the origin)
+        $parsed = parse_url($url);
+        $scheme = $parsed['scheme'] ?? 'https';
+        $host = $parsed['host'] ?? '';
+        $port = isset($parsed['port']) ? ':' . $parsed['port'] : '';
+
+        return "{$scheme}://{$host}{$port}";
     }
 
     /**

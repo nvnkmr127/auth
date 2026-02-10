@@ -60,7 +60,7 @@ class SsoLoginHandler extends Component
             ]);
 
             // 5. Redirect
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/apps');
 
         } catch (RuntimeException $e) {
             $this->error = "SSO Login Failed: " . $e->getMessage();

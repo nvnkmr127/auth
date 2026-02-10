@@ -190,6 +190,18 @@
                                 class="inline-block mt-1 px-2 py-0.5 rounded-lg text-[7px] font-black bg-primary/20 text-primary border border-primary/20 tracking-widest">SYSTEM
                                 ADMIN</span>
                         </div>
+                        <form method="POST" action="{{ route('logout') }}" class="flex">
+                            @csrf
+                            <button type="submit"
+                                class="p-2 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200"
+                                title="Sign Out">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -280,6 +292,19 @@
                             <span
                                 class="text-xs font-black text-primary uppercase">{{ substr(Auth::user()->name, 0, 1) }}</span>
                         </div>
+
+                        <form method="POST" action="{{ route('logout') }}" class="flex">
+                            @csrf
+                            <button type="submit"
+                                class="ml-2 p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all duration-200 group"
+                                title="Sign Out">
+                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </header>

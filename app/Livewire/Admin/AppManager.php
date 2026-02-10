@@ -64,7 +64,13 @@ class AppManager extends Component
         }
 
         try {
-            $url = rtrim($app->domain, '/') . '/api/sso/sync';
+            // Extract base URL (scheme + host) to handle cases where domain includes paths
+            $parsed = parse_url($app->domain);
+            $baseUrl = ($parsed['scheme'] ?? 'http') . '://' . ($parsed['host'] ?? $app->domain);
+            if (isset($parsed['port']))
+                $baseUrl .= ':' . $parsed['port'];
+
+            $url = rtrim($baseUrl, '/') . '/api/sso/sync';
             \Illuminate\Support\Facades\Log::info("SSO Syncing from: " . $url);
 
             $response = \Illuminate\Support\Facades\Http::withHeaders([

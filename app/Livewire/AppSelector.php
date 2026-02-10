@@ -38,9 +38,11 @@ class AppSelector extends Component
         // Fetch user's access
         $userAccessIds = $user->appAccesses()->pluck('app_id')->toArray();
 
+        $isAdmin = $user->isAdmin();
+
         // Map apps to include 'has_access' flag
-        $apps = $allApps->map(function ($app) use ($userAccessIds) {
-            $app->has_access = in_array($app->id, $userAccessIds);
+        $apps = $allApps->map(function ($app) use ($userAccessIds, $isAdmin) {
+            $app->has_access = $isAdmin || in_array($app->id, $userAccessIds);
             return $app;
         });
 

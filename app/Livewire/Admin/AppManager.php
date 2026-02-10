@@ -113,17 +113,35 @@ class AppManager extends Component
 
             // 2. Sync Roles for this App
             foreach ($roles as $roleKey => $info) {
-                $role = \App\Models\Role::updateOrCreate(
-                    ['key' => $roleKey, 'app_id' => $app->id],
-                    [
-                        'name' => $info['name'] ?? ucfirst($roleKey),
-                        'description' => $info['description'] ?? '',
-                        'is_global' => false,
-                    ]
-                );
+                // Check if role exists by key (since key is UNIQUE globally in migration)
+                $existingRole = \App\Models\Role::where('key', $roleKey)->first();
 
-                // For now, we'll leave actual permission-to-role linking to manual check
-                // or we could implement a full mapping if the API provides it.
+                if ($existingRole) {
+                    // If it's a global role (like super_admin), don't touch it or try to duplicate it
+                    if ($existingRole->is_global) {
+                        continue;
+                    }
+
+                    // If it exists but belongs to this app, update it
+                    if ($existingRole->app_id == $app->id) {
+                        $existingRole->update([
+                            'name' => $info['name'] ?? ucfirst($roleKey),
+                            'description' => $info['description'] ?? '',
+                        ]);
+                    }
+                    // If it belongs to ANOTHER app, we can't sync it with this key (Unique constraint)
+                    // We skip it to avoid crashing
+                    continue;
+                }
+
+                // If it doesn't exist, create it for this app
+                \App\Models\Role::create([
+                    'key' => $roleKey,
+                    'app_id' => $app->id,
+                    'name' => $info['name'] ?? ucfirst($roleKey),
+                    'description' => $info['description'] ?? '',
+                    'is_global' => false,
+                ]);
             }
 
             $this->dispatch('notify', message: "Successfully synced " . count($roles) . " roles from {$app->name}.");

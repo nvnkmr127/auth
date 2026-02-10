@@ -10,12 +10,18 @@ Route::get('/', function () {
 
 Route::get('/login', LoginForm::class)->name('login')->middleware('guest');
 
-Route::post('/logout', function () {
+Route::match(['get', 'post'], '/logout', function (Illuminate\Http\Request $request) {
     Auth::logout();
     session()->invalidate();
     session()->regenerateToken();
+
+    $redirect = $request->query('redirect');
+    if ($redirect && filter_var($redirect, FILTER_VALIDATE_URL)) {
+        return redirect()->away($redirect);
+    }
+
     return redirect('/');
-})->name('logout')->middleware('auth');
+})->name('logout');
 
 Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard')->middleware('auth');
 

@@ -65,11 +65,18 @@ class AppManager extends Component
 
         try {
             $url = rtrim($app->domain, '/') . '/api/sso/sync';
+            \Illuminate\Support\Facades\Log::info("SSO Syncing from: " . $url);
+
             $response = \Illuminate\Support\Facades\Http::withHeaders([
                 'X-SSO-Sync-Token' => $app->sync_token
             ])->get($url);
 
             if ($response->failed()) {
+                \Illuminate\Support\Facades\Log::error("SSO Sync Failed", [
+                    'url' => $url,
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
                 throw new \Exception("Sync failed: " . ($response->json('error') ?? $response->status()));
             }
 

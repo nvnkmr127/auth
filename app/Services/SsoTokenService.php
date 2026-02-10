@@ -97,6 +97,11 @@ class SsoTokenService
         // Normalize domain to remove trailing slashes
         $baseUrl = rtrim($this->getAudienceFromDomain($domain), '/');
 
+        // Prevent double /sso/callback if it's already in the domain field
+        if (str_ends_with($baseUrl, '/sso/callback')) {
+            return "{$baseUrl}?token={$token}";
+        }
+
         // Append callback path
         return "{$baseUrl}/sso/callback?token={$token}";
     }

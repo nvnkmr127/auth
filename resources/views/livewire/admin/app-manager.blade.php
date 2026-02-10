@@ -12,10 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">
-                        Satellite <span class="text-primary">Registry</span>
+                        Registered <span class="text-primary">Apps</span>
                     </h1>
-                    <p class="text-sm font-semibold text-slate-500 mt-2">Orchestrating the authorization landscape
-                        and satellite service configurations within the Nexus.</p>
+                    <p class="text-sm font-semibold text-slate-500 mt-2">Manage and configure all registered
+                        applications in the system.</p>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <svg class="mr-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path d="M12 4v16m8-8H4" />
                 </svg>
-                Register Satellite
+                Add New App
             </button>
         </div>
     </div>
@@ -36,20 +36,19 @@
                 <thead class="bg-slate-50/50">
                     <tr>
                         <th scope="col" class="py-6 pl-10 pr-3 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Satellite
-                                Identity</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">App
+                                Name</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Bridge
-                                Pointer</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Website
+                                URL</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Emission
-                                Status</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</span>
                         </th>
                         <th scope="col" class="relative py-6 pl-3 pr-10 text-right">
                             <span
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Operations</span>
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Actions</span>
                         </th>
                     </tr>
                 </thead>
@@ -65,7 +64,7 @@
                                     <div class="flex flex-col">
                                         <span
                                             class="text-sm font-bold text-slate-900 uppercase tracking-tight">{{ $app->name }}</span>
-                                        <span class="text-[10px] text-slate-400 font-bold">SLUG:
+                                        <span class="text-[10px] text-slate-400 font-bold">ID:
                                             {{ strtoupper($app->slug) }}</span>
                                     </div>
                                 </div>
@@ -85,13 +84,13 @@
                                     <span
                                         class="px-3 py-1.5 rounded-lg bg-amber-50 text-[9px] font-black text-amber-600 border border-amber-100/50 tracking-widest uppercase flex items-center gap-1.5 w-fit">
                                         <span class="w-1 h-1 bg-amber-500 rounded-full"></span>
-                                        Shielding
+                                        Maintenance
                                     </span>
                                 @else
                                     <span
                                         class="px-3 py-1.5 rounded-lg bg-slate-100 text-[9px] font-black text-slate-400 border border-slate-200 tracking-widest uppercase flex items-center gap-1.5 w-fit">
                                         <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
-                                        Offline
+                                        Inactive
                                     </span>
                                 @endif
                             </td>
@@ -105,7 +104,7 @@
                                     </svg>
                                 </button>
                                 <button wire:click="delete({{ $app->id }})"
-                                    wire:confirm="Permanent deletion of this record will disrupt satellite connectivity. Proceed?"
+                                    wire:confirm="Are you sure you want to delete this app? This will stop it from connecting to the system."
                                     class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-95">
                                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
@@ -158,7 +157,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight" id="modal-title">
-                            {{ $isEditing ? 'Reconfigure Satellite' : 'Register New Node' }}
+                            {{ $isEditing ? 'Edit App' : 'Add New App' }}
                         </h3>
                     </div>
 
@@ -166,8 +165,8 @@
                         <div class="grid grid-cols-2 gap-6">
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Friendly
-                                    Identifier</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
+                                    Name</label>
                                 <input wire:model="name" type="text"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
                                     placeholder="e.g. Sales Portal">
@@ -177,8 +176,8 @@
                             </div>
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">System
-                                    Slug</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
+                                    ID (Slug)</label>
                                 <input wire:model="slug" type="text"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
                                     placeholder="sales-portal">
@@ -190,8 +189,8 @@
 
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Bridge
-                                Endpoint (Domain)</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Redirect
+                                URL (Domain)</label>
                             <input wire:model="domain" type="url"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
                                 placeholder="https://app.example.com/sso">
@@ -202,13 +201,13 @@
 
                         <div class="relative">
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Emission
-                                Tier</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
+                                Status</label>
                             <select wire:model="status"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all cursor-pointer appearance-none">
-                                <option value="active">Active Execution</option>
-                                <option value="inactive">System Locked</option>
-                                <option value="maintenance">Shielding Protocol</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="maintenance">Maintenance</option>
                             </select>
                             <div
                                 class="absolute inset-y-0 right-5 flex items-center pt-8 pointer-events-none text-slate-400">
@@ -227,11 +226,11 @@
                 <div class="mt-10 flex gap-4">
                     <button wire:click="save" type="button"
                         class="flex-1 px-6 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        Synchronize Satellite
+                        Save App
                     </button>
                     <button @click="show = false" type="button"
                         class="px-6 py-5 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all">
-                        Discard Changes
+                        Cancel
                     </button>
                 </div>
             </div>

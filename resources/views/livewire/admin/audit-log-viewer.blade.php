@@ -12,11 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase leading-none">
-                        Security <span class="text-primary">Ledger</span>
+                        Audit <span class="text-primary">Logs</span>
                     </h1>
-                    <p class="text-sm font-semibold text-slate-500 mt-2">Chronological repository of system
-                        mutations,
-                        security events, and entitlement changes within the Nexus.</p>
+                    <p class="text-sm font-semibold text-slate-500 mt-2">View a history of all system activities,
+                        security events, and permission changes.</p>
                 </div>
             </div>
 
@@ -32,15 +31,15 @@
                     </div>
                     <input wire:model.live.debounce.300ms="search" type="text"
                         class="block w-full pl-12 pr-4 py-3.5 text-sm bg-white border-slate-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all placeholder:text-slate-400 shadow-sm font-semibold"
-                        placeholder="Filter by action or actor...">
+                        placeholder="Search by action or user...">
                 </div>
 
                 <div class="relative min-w-[200px]">
                     <select wire:model.live="module"
                         class="block w-full px-5 py-3.5 text-[10px] font-black text-slate-700 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer shadow-sm appearance-none uppercase tracking-widest">
-                        <option value="">All Repositories</option>
+                        <option value="">All Modules</option>
                         @foreach($modules as $mod)
-                            <option value="{{ $mod }}">{{ strtoupper($mod) }} Cluster</option>
+                            <option value="{{ $mod }}">{{ strtoupper($mod) }}</option>
                         @endforeach
                     </select>
                     <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-slate-400">
@@ -60,24 +59,20 @@
                 <thead class="bg-slate-50/50">
                     <tr>
                         <th scope="col" class="py-6 pl-10 pr-3 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Temporal
-                                Node</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Time</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Identity
-                                Actor</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">User</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Action
-                                Protocol</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Action</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Target
-                                Entity</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Target</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-right pr-10">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Origin
-                                IP</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">IP
+                                Address</span>
                         </th>
                     </tr>
                 </thead>
@@ -96,10 +91,10 @@
                                 <div class="flex items-center gap-4">
                                     <div
                                         class="w-8 h-8 rounded-lg bg-primary-light flex items-center justify-center text-[10px] font-black text-primary border border-primary/10 shadow-sm">
-                                        {{ substr($log->user ? $log->user->name : 'N', 0, 1) }}
+                                        {{ substr($log->user ? $log->user->name : 'S', 0, 1) }}
                                     </div>
                                     <span class="text-[11px] font-black text-slate-700 uppercase tracking-tight">
-                                        {{ $log->user ? $log->user->name : 'NEXUS AUTOPILOT' }}
+                                        {{ $log->user ? $log->user->name : 'System' }}
                                     </span>
                                 </div>
                             </td>
@@ -139,15 +134,15 @@
                                                     <path d="M9 5l7 7-7 7" />
                                                 </svg>
                                             </div>
-                                            Delta Payload Explorer
+                                            View Changes
                                         </summary>
                                         <div
                                             class="mt-6 p-8 bg-slate-950 rounded-[2rem] border border-slate-800 shadow-2xl relative overflow-hidden anime-in-slide-down">
                                             <div class="absolute top-0 right-0 p-6 flex items-center gap-2">
                                                 <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full anime-pulse"></div>
                                                 <span
-                                                    class="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Validated
-                                                    Ledger Entry</span>
+                                                    class="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Log
+                                                    Details</span>
                                             </div>
                                             <pre
                                                 class="text-[11px] font-mono text-emerald-400 leading-relaxed overflow-x-auto custom-scrollbar pt-4"><code>{{ json_encode($log->changes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}</code></pre>
@@ -168,11 +163,11 @@
                                                 d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
-                                    <h3 class="text-xs font-black text-slate-900 uppercase tracking-[0.3em]">No Signals
-                                        Detected</h3>
+                                    <h3 class="text-xs font-black text-slate-900 uppercase tracking-[0.3em]">No Logs Found
+                                    </h3>
                                     <p
                                         class="text-[10px] font-semibold text-slate-400 mt-4 uppercase tracking-widest leading-relaxed">
-                                        Adjust your temporal filters or cluster parameters to verify results.</p>
+                                        Try adjusting your search filters to find what you're looking for.</p>
                                 </div>
                             </td>
                         </tr>
@@ -199,11 +194,11 @@
                 <div>
                     <h3
                         class="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-8 border-b border-white/5 pb-4">
-                        Integrity Level</h3>
-                    <p class="text-2xl font-black tracking-tight mb-5">LEDGER MUTATION FIDELITY: 100%</p>
+                        System Integrity</h3>
+                    <p class="text-2xl font-black tracking-tight mb-5">SECURE LOGGING ACTIVE</p>
                     <p class="text-[11px] text-slate-400 leading-relaxed font-semibold uppercase tracking-wide">
-                        Nexus Identity maintains an immutable record of all state mutations. Logs are stored with
-                        write-once-read-many (WORM) parameters to ensure absolute forensic integrity across the cluster.
+                        The system maintains a secure and permanent record of all changes. These logs cannot be
+                        modified, ensuring a reliable audit trail for all activities.
                     </p>
                 </div>
             </div>
@@ -217,7 +212,7 @@
             <div class="relative z-10">
                 <h3
                     class="text-[10px] font-black uppercase tracking-[0.4em] text-white/60 mb-8 border-b border-white/10 pb-4">
-                    Cluster Diagnostics</h3>
+                    System Status</h3>
                 <div class="flex items-center gap-8 mb-10">
                     <div
                         class="w-20 h-20 rounded-[2rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg transition-transform group-hover:scale-105">
@@ -227,9 +222,9 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-3xl font-black tracking-tighter">LEDGER SECURED</p>
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-white/70 mt-3">Governance
-                            Synchronizer Active</p>
+                        <p class="text-3xl font-black tracking-tighter">LOGGING ACTIVE</p>
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-white/70 mt-3">Audit System
+                            Running</p>
                     </div>
                 </div>
                 <div class="h-2 w-full bg-black/10 rounded-full overflow-hidden shadow-inner">

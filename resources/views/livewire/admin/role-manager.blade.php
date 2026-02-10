@@ -12,10 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase leading-none">
-                        Access <span class="text-primary">Protocols</span>
+                        User <span class="text-primary">Roles</span>
                     </h1>
-                    <p class="text-sm font-semibold text-slate-500 mt-2">Defining the hierarchical structure of
-                        identity entitlements and satellite access levels.</p>
+                    <p class="text-sm font-semibold text-slate-500 mt-2">Create and manage user roles and their
+                        associated permissions.</p>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <svg class="mr-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path d="M12 4v16m8-8H4" />
                 </svg>
-                Establish Protocol
+                Add New Role
             </button>
         </div>
     </div>
@@ -45,7 +45,7 @@
                         <span
                             class="px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] {{ $role->is_global ? 'bg-primary-light text-primary border border-primary/20 flex items-center gap-1.5' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
                             @if($role->is_global) <span class="w-1 h-1 bg-primary rounded-full anime-pulse"></span> @endif
-                            {{ $role->is_global ? 'Universal' : 'Satellite' }}
+                            {{ $role->is_global ? 'Global' : 'App-Specific' }}
                         </span>
                     </div>
 
@@ -60,25 +60,24 @@
                     <div class="flex justify-between items-center mb-8">
                         <div class="flex flex-col">
                             <span class="text-2xl font-black text-slate-900 leading-none">{{ $role->users_count }}</span>
-                            <span
-                                class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1.5">Identities</span>
+                            <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1.5">Users</span>
                         </div>
                         <div class="flex flex-col items-end">
                             <span
                                 class="text-2xl font-black text-primary leading-none">{{ $role->permissions_count }}</span>
                             <span
-                                class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1.5">Capabilities</span>
+                                class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1.5">Permissions</span>
                         </div>
                     </div>
 
                     <div class="flex gap-3">
                         <button wire:click="edit({{ $role->id }})"
                             class="flex-1 py-3.5 px-4 bg-white border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-600 rounded-xl hover:bg-primary-light hover:text-primary hover:border-primary/20 transition-all shadow-sm active:scale-95">
-                            Reconfigure
+                            Edit Role
                         </button>
                         @if(!in_array($role->key, ['super_admin']))
                             <button wire:click="delete({{ $role->id }})"
-                                wire:confirm="Protocol decommissioning will purge all linked entitlements. Proceed?"
+                                wire:confirm="Are you sure you want to delete this role? All users with this role will lose their permissions."
                                 class="p-3.5 bg-white border border-slate-100 text-slate-300 rounded-xl hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 transition-all active:scale-95 shadow-sm">
                                 <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                     stroke-width="2.5">
@@ -126,10 +125,10 @@
                         <div class="flex flex-col">
                             <h3 class="text-2xl font-black text-slate-900 uppercase tracking-tight leading-none"
                                 id="modal-title">
-                                {{ $isEditing ? 'Sync Access Protocol' : 'Define Authority' }}
+                                {{ $isEditing ? 'Edit Role' : 'Add New Role' }}
                             </h3>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-2">Governance
-                                Schema Orchestration</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-2">Role
+                                Configuration</p>
                         </div>
                     </div>
 
@@ -138,11 +137,11 @@
                         <div class="space-y-8">
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Protocol
-                                    Designation</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Role
+                                    Name</label>
                                 <input wire:model="name" type="text"
                                     class="block w-full px-5 py-4 text-sm font-black bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all uppercase tracking-tight"
-                                    placeholder="e.g. Audit Commissioner">
+                                    placeholder="e.g. Auditor">
                                 @error('name') <span
                                     class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
                                 @enderror
@@ -150,11 +149,11 @@
 
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Cryptographic
-                                    Key</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Role
+                                    Key (Slug)</label>
                                 <input wire:model="key" type="text"
                                     class="block w-full px-5 py-4 text-sm font-black bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
-                                    placeholder="audit_commissioner">
+                                    placeholder="auditor">
                                 @error('key') <span
                                     class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
                                 @enderror
@@ -162,11 +161,10 @@
 
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Orchestration
-                                    Mandate</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Description</label>
                                 <textarea wire:model="description" rows="4"
                                     class="block w-full px-5 py-4 text-sm font-semibold text-slate-600 bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all leading-relaxed placeholder:italic"
-                                    placeholder="Brief detailing of the internal protocol mandates..."></textarea>
+                                    placeholder="Enter a description for this role..."></textarea>
                                 @error('description') <span
                                     class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
                                 @enderror
@@ -175,7 +173,7 @@
                             <div class="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-sm">
                                 <h4
                                     class="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em] mb-6 border-b border-slate-200 pb-4 flex items-center justify-between">
-                                    Transmission Scope
+                                    Role Scope
                                     <span class="w-2 h-2 bg-primary rounded-full anime-pulse"></span>
                                 </h4>
                                 <div class="space-y-6">
@@ -190,18 +188,18 @@
                                             </div>
                                         </div>
                                         <span
-                                            class="ml-4 text-[10px] font-black text-slate-700 uppercase tracking-widest">Universal
-                                            Scope (Nexus)</span>
+                                            class="ml-4 text-[10px] font-black text-slate-700 uppercase tracking-widest">Global
+                                            Role (All Apps)</span>
                                     </button>
 
                                     @if(!$is_global)
                                         <div class="animate-in fade-in slide-in-from-top-2 relative">
                                             <select wire:model="app_id"
                                                 class="block w-full px-5 py-4 text-[10px] font-black uppercase text-slate-800 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all appearance-none cursor-pointer">
-                                                <option value="">Link Target Satellite</option>
+                                                <option value="">Select App</option>
                                                 @foreach($apps as $app)
                                                     <option wire:key="app-opt-{{ $app->id }}" value="{{ $app->id }}">
-                                                        {{ strtoupper($app->name) }} Node
+                                                        {{ strtoupper($app->name) }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -221,8 +219,7 @@
                         <!-- Right Column: Permission Matrix -->
                         <div class="flex flex-col">
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 ml-1">Capability
-                                Matrix</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-3 ml-1">Permissions</label>
                             <div
                                 class="flex-grow h-[500px] overflow-y-auto border border-slate-100 rounded-[2.5rem] p-8 bg-slate-50/50 custom-scrollbar shadow-inner">
                                 @foreach($permissionGroups as $group => $permissions)
@@ -231,7 +228,7 @@
                                             <div class="h-[1px] flex-grow bg-slate-200"></div>
                                             <h5
                                                 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] whitespace-nowrap">
-                                                {{ $group ?? 'System' }} Repository
+                                                {{ $group ?? 'System' }} Permissions
                                             </h5>
                                             <div class="h-[1px] flex-grow bg-slate-200"></div>
                                         </div>
@@ -263,11 +260,11 @@
                 <div class="mt-12 flex gap-4">
                     <button wire:click="save" type="button"
                         class="flex-1 px-6 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        Establish Protocol Link
+                        Save Role
                     </button>
                     <button @click="show = false" type="button"
                         class="px-6 py-5 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
-                        Cancel Orchestration
+                        Cancel
                     </button>
                 </div>
             </div>

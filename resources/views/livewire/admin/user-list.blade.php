@@ -12,10 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl tracking-tight leading-tight">
-                        Identity <span class="text-primary">Directory</span>
+                        User <span class="text-primary">Management</span>
                     </h1>
-                    <p class="text-sm font-medium text-slate-500 mt-1">Managing identity records and global access
-                        entitlements for the Nexus Identity cluster.</p>
+                    <p class="text-sm font-medium text-slate-500 mt-1">Manage and view all registered users and their
+                        permissions.</p>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                     </div>
                     <input wire:model.live.debounce.300ms="search" type="text"
                         class="block w-full pl-12 pr-4 py-3 text-sm bg-white border-slate-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all placeholder:text-slate-400 shadow-sm"
-                        placeholder="Search identities...">
+                        placeholder="Search users...">
                 </div>
 
                 <button wire:click="create"
@@ -39,7 +39,7 @@
                     <svg class="mr-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path d="M12 4v16m8-8H4" />
                     </svg>
-                    Register Identity
+                    Add New User
                 </button>
             </div>
         </div>
@@ -52,20 +52,20 @@
                 <thead class="bg-slate-50/50">
                     <tr>
                         <th scope="col" class="py-6 pl-10 pr-3 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Identify
-                                Record</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">User
+                                Name</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Contact
-                                Node</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Email
+                                Address</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Access
-                                Matrices</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">App
+                                Access</span>
                         </th>
                         <th scope="col" class="relative py-6 pl-3 pr-10 text-right">
                             <span
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Operations</span>
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Actions</span>
                         </th>
                     </tr>
                 </thead>
@@ -81,7 +81,7 @@
                                     <div class="flex flex-col">
                                         <span
                                             class="text-sm font-bold text-slate-900 uppercase tracking-tight">{{ $user->name }}</span>
-                                        <span class="text-[10px] text-slate-400 font-medium">UID:
+                                        <span class="text-[10px] text-slate-400 font-medium">ID:
                                             {{ str_pad($user->id, 6, '0', STR_PAD_LEFT) }}</span>
                                     </div>
                                 </div>
@@ -93,25 +93,25 @@
                                 <div class="flex items-center gap-2">
                                     <span
                                         class="px-3 py-1 rounded-lg bg-primary-light text-[10px] font-black text-primary border border-primary/10 tracking-widest uppercase">
-                                        {{ $user->app_accesses_count }} SATELLITES
+                                        {{ $user->app_accesses_count }} APPS
                                     </span>
                                 </div>
                             </td>
                             <td class="whitespace-nowrap py-6 pl-3 pr-10 text-right space-x-2">
                                 <a href="{{ route('admin.user.apps', $user) }}"
                                     class="inline-flex items-center px-4 py-2 bg-slate-50 text-slate-900 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:shadow-lg transition-all">
-                                    Manage Matrices
+                                    Manage Access
                                 </a>
                                 <button wire:click="edit({{ $user->id }})"
                                     class="p-2 text-slate-400 hover:text-primary hover:bg-primary-light rounded-xl transition-all">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
                                         <path
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002-2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </button>
                                 <button wire:click="delete({{ $user->id }})"
-                                    wire:confirm="Permanent decommissioning of this identity will purge all associated entitlements. Proceed?"
+                                    wire:confirm="Are you sure you want to delete this user? All their data and permissions will be removed."
                                     class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
@@ -164,15 +164,15 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold tracking-tight text-slate-900" id="modal-title">
-                            {{ $isEditing ? 'Reconfigure Identity Cluster' : 'Provision New Identity' }}
+                            {{ $isEditing ? 'Edit User' : 'Add New User' }}
                         </h3>
                     </div>
 
                     <div class="space-y-6">
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Identity
-                                Label</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Full
+                                Name</label>
                             <input wire:model="name" type="text"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
                                 placeholder="e.g. John Doe">
@@ -183,8 +183,8 @@
 
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Communication
-                                Endpoint (Email)</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Email
+                                Address</label>
                             <input wire:model="email" type="email"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
                                 placeholder="john@example.com">
@@ -196,8 +196,7 @@
                         <div class="grid grid-cols-2 gap-6">
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Security
-                                    Key (Password)</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Password</label>
                                 <input wire:model="password" type="password"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
                                     placeholder="••••••••">
@@ -207,16 +206,16 @@
                             </div>
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Verify
-                                    Key</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Confirm
+                                    Password</label>
                                 <input wire:model="password_confirmation" type="password"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
                                     placeholder="••••••••">
                             </div>
                         </div>
                         @if($isEditing)
-                            <p class="text-[10px] text-slate-400 font-medium ml-1 mt-2"> Leave security key fields empty to
-                                maintain current credentials.</p>
+                            <p class="text-[10px] text-slate-400 font-medium ml-1 mt-2"> Leave password fields empty to keep
+                                the current password.</p>
                         @endif
                     </div>
                 </div>
@@ -224,11 +223,11 @@
                 <div class="mt-10 flex gap-4">
                     <button wire:click="save" type="button"
                         class="flex-1 px-6 py-4 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        {{ $isEditing ? 'Synchronize Identity' : 'Execute Provisioning' }}
+                        {{ $isEditing ? 'Save Changes' : 'Add User' }}
                     </button>
                     <button @click="show = false" type="button"
                         class="px-6 py-4 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all">
-                        Discard
+                        Cancel
                     </button>
                 </div>
             </div>
@@ -246,8 +245,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Global Visibility</p>
-                <p class="text-xl font-black text-slate-900">Total Identities: {{ $users->total() }}</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Total Users</p>
+                <p class="text-xl font-black text-slate-900">Total Users: {{ $users->total() }}</p>
             </div>
         </div>
 
@@ -260,10 +259,8 @@
                 </svg>
             </div>
             <p class="text-xs font-semibold text-slate-500 leading-relaxed">
-                Platform identity security is active. All user mutations are tracked via the <a
-                    href="{{ route('admin.audit-logs') }}"
-                    class="text-primary font-black hover:underline uppercase tracking-tight">Security
-                    Ledger</a>.
+                All account changes are tracked in the <a href="{{ route('admin.audit-logs') }}"
+                    class="text-primary font-black hover:underline uppercase tracking-tight">Audit Logs</a>.
             </p>
         </div>
     </div>

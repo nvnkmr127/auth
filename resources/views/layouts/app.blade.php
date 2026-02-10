@@ -41,7 +41,7 @@
                                 </svg>
                             </div>
                             <span class="text-xs font-bold text-white tracking-widest uppercase truncate">
-                                {{ Auth::user()->currentTeam?->name ?? 'Identity Hub' }}
+                                {{ Auth::user()->currentTeam?->name ?? 'Control Center' }}
                             </span>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                         <!-- IDENTITY SECTION -->
                         <div>
                             <h3 class="px-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">
-                                Identity
+                                Account
                             </h3>
                             <div class="space-y-1">
                                 <a href="{{ route('dashboard') }}"
@@ -70,7 +70,7 @@
                                         <path
                                             d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                                     </svg>
-                                    Nexus Satellites
+                                    Applications
                                 </a>
 
                                 <a href="{{ route('profile.security') }}"
@@ -80,7 +80,7 @@
                                         <path
                                             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
-                                    Access Shield
+                                    Security Settings
                                 </a>
 
                                 <a href="{{ route('profile.api-tokens') }}"
@@ -90,7 +90,7 @@
                                         <path
                                             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                     </svg>
-                                    Signal Tokens
+                                    API Tokens
                                 </a>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                             <path
                                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                         </svg>
-                                        Identity Directory
+                                        User Management
                                     </a>
 
                                     <a href="{{ route('admin.apps') }}"
@@ -119,7 +119,7 @@
                                             <path
                                                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
-                                        Satellite Registry
+                                        Registered Apps
                                     </a>
 
                                     <a href="{{ route('admin.roles') }}"
@@ -129,7 +129,7 @@
                                             <path
                                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
-                                        Access Protocols
+                                        User Roles
                                     </a>
 
                                     <a href="{{ route('admin.permissions') }}"
@@ -139,7 +139,7 @@
                                             <path
                                                 d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                         </svg>
-                                        Capability Matrix
+                                        Permissions
                                     </a>
 
                                     <a href="{{ route('admin.audit-logs') }}"
@@ -149,7 +149,7 @@
                                             <path
                                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 0 002-2M9 5a2 2 0 012-2h2a2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                         </svg>
-                                        Security Ledger
+                                        Audit Logs
                                     </a>
 
                                     <a href="{{ route('admin.sso-sessions') }}"
@@ -159,7 +159,7 @@
                                             <path
                                                 d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A10.003 10.003 0 003 11c0-5.523 4.477-10 10-10s10 4.477 10 10a9.985 9.985 0 01-2.017 5.992l.053.09M10 11V7a2 2 0 114 0v4a2 2 0 11-4 0z" />
                                         </svg>
-                                        SSO Vault
+                                        Active Sessions
                                     </a>
                                 </div>
                             </div>
@@ -183,11 +183,12 @@
                         <div class="ml-3 flex-1 min-w-0">
                             <div class="flex items-center gap-2">
                                 <p class="text-xs font-bold text-white truncate uppercase tracking-tight">
-                                    {{ Auth::user()->name }}</p>
+                                    {{ Auth::user()->name }}
+                                </p>
                             </div>
                             <span
-                                class="inline-block mt-1 px-2 py-0.5 rounded-lg text-[7px] font-black bg-primary/20 text-primary border border-primary/20 tracking-widest">PROTOTYPE
-                                ROOT</span>
+                                class="inline-block mt-1 px-2 py-0.5 rounded-lg text-[7px] font-black bg-primary/20 text-primary border border-primary/20 tracking-widest">SYSTEM
+                                ADMIN</span>
                         </div>
                     </div>
                 </div>
@@ -202,9 +203,10 @@
                 <div class="flex items-center gap-8 flex-1">
                     <div class="flex items-center gap-3">
                         <span class="text-sm font-black text-slate-900 tracking-widest uppercase">Auth <span
-                                class="text-primary">Core</span></span>
+                                class="text-primary">Portal</span></span>
                         <div class="h-4 w-[1px] bg-slate-200"></div>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Identity Hub</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Control
+                            Center</span>
                     </div>
 
                     <!-- Search Bar -->
@@ -218,7 +220,7 @@
                         </div>
                         <input type="text"
                             class="block w-full pl-11 pr-12 py-3 text-sm bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/20 focus:bg-white transition-all placeholder:text-slate-400"
-                            placeholder="Search users, apps, or audit logs...">
+                            placeholder="Search...">
                         <div class="absolute inset-y-0 right-4 flex items-center">
                             <span
                                 class="text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded-lg">/</span>
@@ -232,8 +234,7 @@
                         class="flex items-center gap-3 px-5 py-2.5 bg-primary-light rounded-2xl border border-primary/10 shadow-sm">
                         <div class="flex flex-col items-end">
                             <span
-                                class="text-[8px] font-black text-primary/60 uppercase tracking-widest leading-none">SSO
-                                Protocol</span>
+                                class="text-[8px] font-black text-primary/60 uppercase tracking-widest leading-none">SSO</span>
                             <span class="text-[10px] font-bold text-primary uppercase leading-none mt-1">Active</span>
                         </div>
                         <div
@@ -293,7 +294,7 @@
                 </button>
                 <div class="flex flex-1 items-center px-4">
                     <span class="text-xs font-black text-slate-900 tracking-[0.2em] uppercase leading-none">Auth <span
-                            class="text-primary">Core</span></span>
+                            class="text-primary">Portal</span></span>
                 </div>
             </div>
 

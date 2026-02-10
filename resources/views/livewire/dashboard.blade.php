@@ -11,11 +11,11 @@
             </div>
             <div>
                 <h1 class="text-3xl tracking-tight leading-tight">
-                    System <span class="text-primary">Overview</span>
+                    Dashboard
                 </h1>
                 <p class="text-sm font-medium text-gray-500 mt-1 italic">Welcome back, <span
-                        class="font-bold text-gray-900">{{ $user->name }}</span>. You are managing the Nexus Identity
-                    cluster.</p>
+                        class="font-bold text-gray-900">{{ $user->name }}</span>. You are managing the authentication
+                    portal.</p>
             </div>
         </div>
     </div>
@@ -37,9 +37,9 @@
                     <span
                         class="text-2xl font-black text-primary/10 group-hover:text-primary/20 transition-colors">{{ $stats['total_apps'] }}</span>
                 </div>
-                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Application Registry</h3>
-                <p class="text-xs font-medium text-slate-400 leading-relaxed">Manage satellite services, configure
-                    endpoint domains, and update SSO settings.</p>
+                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Applications</h3>
+                <p class="text-xs font-medium text-slate-400 leading-relaxed">Manage connected applications, configure
+                    URLs, and update settings.</p>
             </div>
         </a>
 
@@ -59,8 +59,8 @@
                         class="text-2xl font-black text-primary/10 group-hover:text-primary/20 transition-colors">{{ $stats['total_users'] }}</span>
                 </div>
                 <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">User Management</h3>
-                <p class="text-xs font-medium text-slate-400 leading-relaxed">Control identity records, toggle
-                    application access, and manage user lifecycles.</p>
+                <p class="text-xs font-medium text-slate-400 leading-relaxed">Manage user accounts, control application
+                    access, and update user details.</p>
             </div>
         </a>
 
@@ -81,15 +81,14 @@
                         ACTIVE
                     </div>
                 </div>
-                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Access Control (RBAC)</h3>
-                <p class="text-xs font-medium text-slate-400 leading-relaxed">Define global and app-scoped roles, manage
-                    permissions, and enforce security policies.</p>
+                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Roles & Permissions</h3>
+                <p class="text-xs font-medium text-slate-400 leading-relaxed">Define user roles, manage permissions, and
+                    enforce access rules.</p>
             </div>
         </a>
 
         <!-- Security Ledger Module -->
-        <a href="{{ route('admin.audit-logs') }}"
-            class="group premium-card p-10 rounded-[2.5rem]">
+        <a href="{{ route('admin.audit-logs') }}" class="group premium-card p-10 rounded-[2.5rem]">
             <div class="flex flex-col h-full">
                 <div
                     class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
@@ -99,9 +98,9 @@
                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                     </svg>
                 </div>
-                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Security & Logs</h3>
-                <p class="text-xs font-medium text-slate-400 leading-relaxed">Full audit trail of all system mutations.
-                    Track actors, actions, and historical data changes.</p>
+                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">Audit Logs</h3>
+                <p class="text-xs font-medium text-slate-400 leading-relaxed">View a history of all system activities,
+                    track user actions, and see what changed.</p>
             </div>
         </a>
 
@@ -117,15 +116,14 @@
                             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
                 </div>
-                <h3 class="text-sm font-extrabold tracking-widest mb-3">SSO Vault</h3>
-                <p class="text-xs font-medium text-gray-400 leading-relaxed">Manage JWT signing keys, token lifetimes,
-                    and callback whitelisting for auth flows.</p>
+                <h3 class="text-sm font-extrabold tracking-widest mb-3">Active Sessions</h3>
+                <p class="text-xs font-medium text-gray-400 leading-relaxed">View and manage active login sessions and
+                    security tokens.</p>
             </div>
         </a>
 
         <!-- Dev Portal Module -->
-        <a href="{{ route('profile.api-tokens') }}"
-            class="group premium-card p-10 rounded-[2.5rem]">
+        <a href="{{ route('profile.api-tokens') }}" class="group premium-card p-10 rounded-[2.5rem]">
             <div class="flex flex-col h-full">
                 <div
                     class="w-14 h-14 rounded-2xl bg-primary-light flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
@@ -134,9 +132,9 @@
                         <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
                 </div>
-                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">API & Access</h3>
-                <p class="text-xs font-medium text-slate-400 leading-relaxed">Access integration guides, SDKs, and
-                    developer tokens for custom app implementations.</p>
+                <h3 class="text-sm font-extrabold tracking-widest mb-3 uppercase">API Tokens</h3>
+                <p class="text-xs font-medium text-slate-400 leading-relaxed">Manage API tokens for secure programmatic
+                    access to the system.</p>
             </div>
         </a>
     </div>
@@ -147,10 +145,10 @@
         <div
             class="lg:col-span-2 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col">
             <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
-                <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Recent Activity Cluster</h3>
+                <h3 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">Recent Activity</h3>
                 <a href="{{ route('admin.audit-logs') }}"
-                    class="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 uppercase tracking-widest">Full
-                    History →</a>
+                    class="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 uppercase tracking-widest">View
+                    All Logs →</a>
             </div>
             <div class="p-8 flex-1">
                 <div class="space-y-6">
@@ -175,7 +173,7 @@
                             <svg class="w-10 h-10 mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span class="text-xs font-bold uppercase tracking-widest">No Recent Signals</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">No Recent Activity</span>
                         </div>
                     @endforelse
                 </div>
@@ -188,9 +186,9 @@
                 <div
                     class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-colors">
                 </div>
-                <h3 class="text-sm font-black uppercase tracking-[0.2em] mb-4 relative z-10">Integration Hub</h3>
+                <h3 class="text-sm font-black uppercase tracking-[0.2em] mb-4 relative z-10">Quick Connect</h3>
                 <p class="text-xs font-medium text-gray-400 mb-6 relative z-10 leading-relaxed">Connect your first
-                    satellite application in minutes using our signed SSO protocol.</p>
+                    application in minutes using our simple SSO setup.</p>
                 <a href="{{ route('admin.apps') }}"
                     class="inline-flex items-center px-6 py-3 bg-white text-[#0b0e14] rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-50 transition-colors relative z-10">
                     Connect App
@@ -201,26 +199,29 @@
             </div>
 
             <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-premium">
-                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Quick Diagnostics</h3>
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">System Status</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
                         <span class="text-xs font-bold text-slate-600 uppercase tracking-tight">SSO Status</span>
                         <span class="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
+                            <span
+                                class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
                             OPERATIONAL
                         </span>
                     </div>
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
                         <span class="text-xs font-bold text-slate-600 uppercase tracking-tight">Token Engine</span>
                         <span class="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
+                            <span
+                                class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
                             STABLE
                         </span>
                     </div>
                     <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                        <span class="text-xs font-bold text-slate-600 uppercase tracking-tight">Audit Stream</span>
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-tight">Audit System</span>
                         <span class="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
+                            <span
+                                class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
                             ACTIVE
                         </span>
                     </div>

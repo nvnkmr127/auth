@@ -12,10 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase leading-none">
-                        Capability <span class="text-primary">Matrix</span>
+                        Permissions
                     </h1>
-                    <p class="text-sm font-semibold text-slate-500 mt-2">Defining granular entitlement keys and
-                        security scopes for the global access mesh.</p>
+                    <p class="text-sm font-semibold text-slate-500 mt-2">Define and manage specific permissions across
+                        the entire system.</p>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <svg class="mr-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path d="M12 4v16m8-8H4" />
                 </svg>
-                Define Capability
+                Add Permission
             </button>
         </div>
     </div>
@@ -36,20 +36,20 @@
                 <thead class="bg-slate-50/50">
                     <tr>
                         <th scope="col" class="py-6 pl-10 pr-3 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Security Key
-                                (Key)</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Permission
+                                Key</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Cluster
-                                Designation</span>
+                            <span
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Category</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Capability
-                                Description</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Permission
+                                Name</span>
                         </th>
                         <th scope="col" class="relative py-6 pl-3 pr-10 text-right">
                             <span
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Operations</span>
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Actions</span>
                         </th>
                     </tr>
                 </thead>
@@ -82,7 +82,7 @@
                                     </svg>
                                 </button>
                                 <button wire:click="delete({{ $permission->id }})"
-                                    wire:confirm="Purging this capability will disrupt associated protocol entitlements. Proceed?"
+                                    wire:confirm="Are you sure you want to delete this permission? This may affect users and roles that rely on it."
                                     class="p-2 text-slate-200 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-95">
                                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
@@ -136,18 +136,18 @@
                         </div>
                         <h3 class="text-2xl font-black text-slate-900 uppercase tracking-tight leading-none"
                             id="modal-title">
-                            {{ $isEditing ? 'Sync Capability' : 'Map Authority' }}
+                            {{ $isEditing ? 'Edit Permission' : 'Add Permission' }}
                         </h3>
                     </div>
 
                     <div class="space-y-8">
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">Capability
-                                Alias</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">Permission
+                                Name</label>
                             <input wire:model="name" type="text"
                                 class="block w-full px-5 py-4 text-sm font-black bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all shadow-sm"
-                                placeholder="e.g. Purge Security Logs">
+                                placeholder="e.g. Delete Audit Logs">
                             @error('name') <span
                                 class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase letter-spacing-wider">{{ $message }}</span>
                             @enderror
@@ -155,11 +155,11 @@
 
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">System
-                                Handle (Slug)</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">Key
+                                (Slug)</label>
                             <input wire:model="key" type="text"
                                 class="block w-full px-5 py-4 text-sm font-mono font-black bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all shadow-sm"
-                                placeholder="e.g. security.logs.purge">
+                                placeholder="e.g. audit.logs.delete">
                             @error('key') <span
                                 class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase letter-spacing-wider">{{ $message }}</span>
                             @enderror
@@ -167,18 +167,17 @@
 
                         <div>
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">Cluster
-                                Repository</label>
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 ml-1">Category</label>
                             <div class="relative">
                                 <input wire:model="group" type="text" list="groups"
                                     class="block w-full px-5 py-4 text-sm font-black bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all shadow-sm"
-                                    placeholder="e.g. Identity Governance">
+                                    placeholder="e.g. User Management">
                                 <datalist id="groups">
-                                    <option value="Identity Management">
-                                    <option value="Protocol & Matrix Regulation">
-                                    <option value="Satellite Access">
-                                    <option value="System Hub">
-                                    <option value="Security Ledger">
+                                    <option value="User Management">
+                                    <option value="Roles & Permissions">
+                                    <option value="App Access">
+                                    <option value="System Admin">
+                                    <option value="Audit Logs">
                                 </datalist>
                                 <div
                                     class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-slate-400">
@@ -198,11 +197,11 @@
                 <div class="mt-12 flex gap-4">
                     <button wire:click="save" type="button"
                         class="flex-1 px-6 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        {{ $isEditing ? 'Sync Matrix Node' : 'Initialize Capability' }}
+                        Save Permission
                     </button>
                     <button @click="show = false" type="button"
                         class="px-6 py-5 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
-                        Discard
+                        Cancel
                     </button>
                 </div>
             </div>

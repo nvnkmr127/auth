@@ -7,7 +7,7 @@
                 stroke="currentColor" stroke-width="3">
                 <path d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Cluster Directory
+            User List
         </a>
     </div>
 
@@ -23,10 +23,10 @@
             </div>
             <div>
                 <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase leading-none">
-                    Manage <span class="text-primary">Matrices</span>
+                    Manage <span class="text-primary">App Access</span>
                 </h1>
                 <p class="text-sm font-semibold text-slate-500 mt-2">
-                    Configuring satellite scope and protocol-based permissions for <span
+                    Configure which applications and roles are assigned to <span
                         class="text-slate-900 font-black">{{ $user->name }}</span>.
                 </p>
             </div>
@@ -69,19 +69,19 @@
                                 <div class="relative group">
                                     <label
                                         class="block text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Assigned
-                                        Access Protocol</label>
+                                        User Role</label>
                                     <select wire:change="updateRole({{ $app->id }}, $event.target.value)"
                                         class="block w-64 pl-4 pr-10 py-3 text-xs font-black text-slate-700 bg-slate-50 border-transparent rounded-xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all cursor-pointer appearance-none">
-                                        <option value="" disabled>SELECT PROTOCOL LEVEL</option>
-                                        <optgroup label="CENTRAL REPOSITORY"
+                                        <option value="" disabled>SELECT A ROLE</option>
+                                        <optgroup label="GLOBAL ROLES"
                                             class="text-[10px] font-black uppercase tracking-widest bg-white text-primary">
                                             @foreach($globalRoles as $role)
                                                 <option value="{{ $role->id }}" @selected($accessState['role_id'] == $role->id)>
-                                                    {{ $role->name }} (CENTRAL)
+                                                    {{ $role->name }} (Global)
                                                 </option>
                                             @endforeach
                                         </optgroup>
-                                        <optgroup label="SATELLITE SPECIFIC"
+                                        <optgroup label="APP-SPECIFIC ROLES"
                                             class="text-[10px] font-black uppercase tracking-widest bg-white text-primary">
                                             @foreach($app->roles as $role)
                                                 <option value="{{ $role->id }}" @selected($accessState['role_id'] == $role->id)>
@@ -101,8 +101,8 @@
                             </div>
                         @else
                             <span
-                                class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Transmission
-                                Restricted</span>
+                                class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Access
+                                Disabled</span>
                         @endif
 
                         <div class="h-8 w-[1px] bg-slate-100 hidden md:block"></div>
@@ -110,7 +110,7 @@
                         <!-- Modern Toggle -->
                         <div class="flex items-center gap-4">
                             <span
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{{ $hasAccess ? 'Bridged' : 'Severed' }}</span>
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{{ $hasAccess ? 'Enabled' : 'Disabled' }}</span>
                             <button wire:click="toggleAccess({{ $app->id }})" type="button"
                                 class="{{ $hasAccess ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-slate-200' }} relative inline-flex h-8 w-14 flex-shrink-0 cursor-pointer rounded-full border-4 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ring-4 ring-transparent hover:ring-primary/10"
                                 role="switch" aria-checked="{{ $hasAccess ? 'true' : 'false' }}">
@@ -143,9 +143,9 @@
                         <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">No Satellite Linkage</h3>
-                <p class="text-xs font-semibold text-slate-400 mt-3">The active satellite cluster is currently offline or
-                    unpopulated.</p>
+                <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">No Applications Found</h3>
+                <p class="text-xs font-semibold text-slate-400 mt-3">There are no applications registered in the system yet.
+                </p>
             </div>
         @endif
     </div>
@@ -158,11 +158,9 @@
         </div>
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div class="max-w-2xl">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-4">Identity Integrity
-                    Protocol</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-4">Security Policy</h3>
                 <p class="text-[11px] font-medium text-slate-400 leading-relaxed">
-                    Matrix modifications trigger immediate JWT invalidation for the target satellite node.
-                    Changes are synchronized across the cluster in real-time using the **Nexus Secured Bus**.
+                    Changes to user permissions take effect immediately across all applications to ensure security.
                 </p>
             </div>
             <div

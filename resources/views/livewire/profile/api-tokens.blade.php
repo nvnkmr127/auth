@@ -2,10 +2,10 @@
     <!-- Header -->
     <div class="mb-12">
         <h1 class="text-3xl tracking-tight text-slate-900 mb-2 leading-tight">
-            Signal <span class="text-primary">Tokens</span>
+            API <span class="text-primary">Tokens</span>
         </h1>
-        <p class="text-sm font-semibold text-slate-500">Manage your access keys for programmatic communication with
-            Nexus Identity services.</p>
+        <p class="text-sm font-semibold text-slate-500">Manage your API tokens to securely access our services from your
+            own applications.</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -14,13 +14,13 @@
             <div class="premium-card rounded-[2.5rem] p-8">
                 <h3
                     class="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] mb-8 border-b border-slate-50 pb-4">
-                    Generate Link Token</h3>
+                    Create New Token</h3>
                 <form wire:submit.prevent="createToken" class="space-y-6">
                     <div>
                         <label
                             class="block text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Token
-                            Label</label>
-                        <input type="text" wire:model="name" placeholder="e.g. Cluster Nexus Port"
+                            Name</label>
+                        <input type="text" wire:model="name" placeholder="e.g. My Application"
                             class="block w-full px-5 py-4 bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all text-sm font-bold placeholder:text-slate-400">
                         @error('name') <span
                             class="text-[10px] font-bold text-rose-500 mt-2 block ml-1 uppercase">{{ $message }}</span>
@@ -29,7 +29,7 @@
 
                     <button type="submit"
                         class="w-full flex justify-center items-center px-6 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        Execute Generation
+                        Create Token
                     </button>
                 </form>
             </div>
@@ -39,7 +39,7 @@
         <div class="lg:col-span-2">
             <div class="premium-card rounded-[2.5rem] overflow-hidden">
                 <div class="px-10 py-6 border-b border-slate-50 bg-slate-50/30">
-                    <h3 class="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Active Signal Channels
+                    <h3 class="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">Your Active Tokens
                     </h3>
                 </div>
                 <div class="divide-y divide-slate-50 text-xs">
@@ -55,7 +55,7 @@
                                     <span class="flex items-center gap-1.5">
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" />
                                         </svg>
                                         {{ $token->created_at->format('M d, Y') }}
                                     </span>
@@ -64,14 +64,14 @@
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        {{ $token->last_used_at ? $token->last_used_at->diffForHumans() : 'Standby' }}
+                                        {{ $token->last_used_at ? $token->last_used_at->diffForHumans() : 'Never used' }}
                                     </span>
                                 </div>
                             </div>
                             <button wire:click="revokeToken({{ $token->id }})"
-                                wire:confirm="Are you sure you want to sever this signal token? Programmatic connectivity will be lost."
+                                wire:confirm="Are you sure you want to delete this token? This cannot be undone and your application will lose access."
                                 class="px-6 py-2.5 text-[10px] font-black text-rose-500 hover:bg-rose-50 border border-slate-100/50 hover:border-rose-100 rounded-xl uppercase tracking-widest transition-all opacity-0 group-hover:opacity-100 active:scale-95 shadow-sm">
-                                Sever Channel
+                                Delete Token
                             </button>
                         </div>
                     @empty
@@ -83,8 +83,8 @@
                                         d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                 </svg>
                             </div>
-                            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">No Signal Tokens
-                                Detected</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">No API Tokens
+                                Found</span>
                         </div>
                     @endforelse
                 </div>
@@ -99,16 +99,16 @@
             class="bg-white rounded-[3rem] max-w-lg w-full p-12 shadow-2xl overflow-hidden relative border border-slate-100 anime-in-scale">
             <div class="absolute -right-20 -top-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
 
-            <h3 class="text-2xl font-black text-slate-900 mb-4 relative uppercase tracking-tight">Channel Key Ready</h3>
-            <p class="text-sm font-semibold text-slate-500 mb-10 leading-relaxed">Cryptographic link established. Copy
-                your signal token now. For your security, this sequence will be permanently masked after graduation.</p>
+            <h3 class="text-2xl font-black text-slate-900 mb-4 relative uppercase tracking-tight">Token Created</h3>
+            <p class="text-sm font-semibold text-slate-500 mb-10 leading-relaxed">Your new API token has been created.
+                Please copy it now. You won't be able to see it again for security reasons.</p>
 
             <div
                 class="bg-slate-50 rounded-[2rem] p-8 border border-slate-100 flex flex-col gap-6 mb-10 group relative">
                 <code
                     class="text-primary font-mono text-xs break-all leading-relaxed font-black">{{ $plainTextToken }}</code>
                 <button
-                    x-on:click="navigator.clipboard.writeText('{{ $plainTextToken }}'); $dispatch('notify', {message: 'Token hashed and copied!'})"
+                    x-on:click="navigator.clipboard.writeText('{{ $plainTextToken }}'); $dispatch('notify', {message: 'Token copied!'})"
                     class="absolute top-4 right-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-200 text-slate-400 hover:text-primary hover:shadow-lg transition-all active:scale-95">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -119,7 +119,7 @@
 
             <button @click="open = false"
                 class="w-full py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                Channel Hashed and Stored
+                Done
             </button>
         </div>
     </div>

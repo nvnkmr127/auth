@@ -2,10 +2,9 @@
     <!-- Header -->
     <div class="mb-12">
         <h1 class="text-3xl tracking-tight text-slate-900 mb-2 leading-tight">
-            Security <span class="text-primary">Protocols</span>
+            Security <span class="text-primary">Settings</span>
         </h1>
-        <p class="text-sm font-semibold text-slate-500">Configure your identity protection and access safeguards for the
-            Nexus cluster.</p>
+        <p class="text-sm font-semibold text-slate-500">Configure your account security and protection settings.</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -26,31 +25,31 @@
                     <span
                         class="px-3 py-1.5 bg-emerald-50 text-emerald-600 font-black text-[8px] uppercase tracking-widest rounded-lg ring-1 ring-emerald-500/20 shadow-sm flex items-center gap-1.5">
                         <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full anime-pulse"></span>
-                        Shield Active
+                        Security Active
                     </span>
                 @else
                     <span
                         class="px-3 py-1.5 bg-slate-50 text-slate-400 font-black text-[8px] uppercase tracking-widest rounded-lg ring-1 ring-slate-200">
-                        Vulnerable
+                        Disabled
                     </span>
                 @endif
             </div>
 
             <h3 class="text-xs font-black tracking-[0.2em] mb-4 uppercase text-slate-900 border-b border-slate-50 pb-4">
-                Access Shield (MFA)</h3>
-            <p class="text-[11px] font-semibold text-slate-500 leading-relaxed mb-10 mr-4">Add a cryptographic
-                verification layer to your identity records by requiring biometric or token-based authorization.</p>
+                Two-Factor Authentication (MFA)</h3>
+            <p class="text-[11px] font-semibold text-slate-500 leading-relaxed mb-10 mr-4">Add an extra layer of
+                security to your account by requiring a verification code to log in.</p>
 
             @if($user->two_factor_confirmed_at)
                 <button wire:click="disable2fa"
-                    wire:confirm="Are you sure you want to disable the Access Shield? This reduces your account security significantly."
+                    wire:confirm="Are you sure you want to disable 2FA? This reduces your account security significantly."
                     class="inline-flex items-center px-8 py-4 bg-rose-50 text-rose-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-100 transition-all border border-rose-100">
-                    Deactivate Shield
+                    Disable 2FA
                 </button>
             @else
                 <button wire:click="enable2fa"
                     class="inline-flex items-center px-8 py-4 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                    Activate Protocol
+                    Enable 2FA
                 </button>
             @endif
         </div>
@@ -69,9 +68,9 @@
             </div>
 
             <h3 class="text-xs font-black tracking-[0.2em] mb-4 uppercase text-slate-900 border-b border-slate-50 pb-4">
-                Authorized Nodes</h3>
-            <p class="text-[11px] font-semibold text-slate-500 leading-relaxed mb-10 mr-4">Review and manage the
-                communication endpoints that are currently bridged to your identity across the cluster.</p>
+                Logged in Devices</h3>
+            <p class="text-[11px] font-semibold text-slate-500 leading-relaxed mb-10 mr-4">Review and manage the devices
+                currently logged into your account.</p>
 
             <div class="space-y-4">
                 <div
@@ -81,7 +80,7 @@
                             class="w-2.5 h-2.5 rounded-full bg-emerald-500 anime-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]">
                         </div>
                         <span class="text-[10px] font-black text-slate-700 uppercase tracking-tight">Active Connection -
-                            Current Terminal</span>
+                            Current Session</span>
                     </div>
                     <span
                         class="text-[9px] font-bold text-slate-400 uppercase bg-white px-2 py-1 rounded-lg border border-slate-100">IP:
@@ -104,10 +103,10 @@
                 </svg>
             </div>
 
-            <h3 class="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tight">Identity Secured</h3>
-            <p class="text-sm font-semibold text-slate-500 mb-10 leading-relaxed px-4">Access Shield is now active for
-                your identity cluster. Store these emergency bypass tokens in a secondary safe. They are required if
-                your primary MFA node becomes unavailable.</p>
+            <h3 class="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tight">Security Enabled</h3>
+            <p class="text-sm font-semibold text-slate-500 mb-10 leading-relaxed px-4">Two-Factor Authentication is now
+                enabled. Save these recovery codes in a safe place. You can use them to log in if you lose access to
+                your phone.</p>
 
             <div class="grid grid-cols-2 gap-4 mb-10">
                 @foreach($recoveryCodes as $code)
@@ -120,7 +119,7 @@
 
             <button @click="open = false"
                 class="w-full py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                Tokens Safely Stored
+                Saved Codes
             </button>
         </div>
     </div>

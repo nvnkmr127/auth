@@ -23,8 +23,14 @@ class AppSelector extends Component
         } catch (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e) {
             $this->addError('access', $e->getMessage());
         } catch (\Exception $e) {
-            $this->addError('access', 'Failed to launch application. Please contact support.');
-            // Log::error("SSO Error: " . $e->getMessage());
+            $user = Auth::user();
+            $isAdmin = $user ? ($user->isAdmin() ? 'YES' : 'NO') : 'N/A';
+            $debug = "User: " . ($user->email ?? 'Guest') . ", Admin: " . $isAdmin;
+            $errorMessage = $e->getMessage();
+            \Illuminate\Support\Facades\Log::channel('single')->error("SSO Error: $errorMessage | Debug: $debug");
+            file_put_contents(storage_path('logs/sso_debug.log'), date('Y-m-d H:i:s') . " - Error: $errorMessage | Debug: $debug\n", FILE_APPEND);
+
+            $this->addError('access', 'Error: ' . $errorMessage . " | Debug: " . $debug);
         }
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-50">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-950">
 
 <head>
     <meta charset="utf-8">
@@ -17,8 +17,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="h-full font-sans antialiased text-gray-900">
-    {{ $slot }}
+<body class="h-full font-sans antialiased text-gray-900 mesh-gradient">
+    <div class="min-h-screen">
+        {{ $slot }}
+    </div>
 </body>
 
 </html>

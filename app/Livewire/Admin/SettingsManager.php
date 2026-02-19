@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Setting;
 use Livewire\Component;
+use Illuminate\Support\Facades\Http;
 
 class SettingsManager extends Component
 {
@@ -10,26 +12,32 @@ class SettingsManager extends Component
     public string $apiKey = '';
     public string $testPhone = '';
 
-    // Frontend Branding Settings (Simulated for "No Backend" request)
     public string $appName = '';
-    public string $mascotName = 'StudioBot';
     public bool $mascotEnabled = true;
 
     public function mount()
     {
-        $this->webhookUrl = config('services.whatsapp.webhook_url') ?? '';
-        $this->apiKey = config('services.whatsapp.api_key') ?? '';
-        $this->appName = config('app.name');
-    }
-
-    public function saveBranding()
-    {
-        $this->dispatch('notify', message: 'Branding updated successfully in frontend.');
+        // Load from Database first, fallback to Config (which reads from .env)
+        $this->webhookUrl = Setting::get('whatsapp_webhook_url', config('services.whatsapp.webhook_url') ?? '');
+        $this->apiKey = Setting::get('whatsapp_api_key', config('services.whatsapp.api_key') ?? '');
+        $this->appName = Setting::get('app_name', config('app.name'));
+        $this->mascotEnabled = (bool) Setting::get('mascot_enabled', true);
     }
 
     public function save()
     {
-        $this->dispatch('notify', message: 'Integration settings saved (Update .env for persistence).');
+        Setting::set('whatsapp_webhook_url', $this->webhookUrl);
+        Setting::set('whatsapp_api_key', $this->apiKey);
+
+        $this->dispatch('notify', message: 'Integration settings saved and persisted.');
+    }
+
+    public function saveBranding()
+    {
+        Setting::set('app_name', $this->appName);
+        Setting::set('mascot_enabled', $this->mascotEnabled);
+
+        $this->dispatch('notify', message: 'Branding settings saved and persisted.');
     }
 
     public function testWebhook()
@@ -39,10 +47,10 @@ class SettingsManager extends Component
             return;
         }
 
-        $phone = $this->testPhone ?: '919876543210'; // Default if none provided
+        $phone = $this->testPhone ?: '919876543210';
 
         try {
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
+            $response = Http::withHeaders([
                 'X-API-KEY' => $this->apiKey,
             ])->post($this->webhookUrl, [
                         'phone' => $phone,
@@ -55,7 +63,7 @@ class SettingsManager extends Component
                 $this->dispatch('notify', message: 'Test webhook dispatched successfully to ' . $phone);
             } else {
                 $status = $response->status();
-                $this->dispatch('notify', message: "Webhook failed with status [{$status}]. Check configuration.", type: 'error');
+                $this->dispatch('notify', message: "Webhook failed with status [{$status}].", type: 'error');
             }
         } catch (\Exception $e) {
             $this->dispatch('notify', message: 'Endpoint unreachable: ' . $e->getMessage(), type: 'error');

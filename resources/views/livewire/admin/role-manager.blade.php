@@ -45,7 +45,7 @@
                         <span
                             class="px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] {{ $role->is_global ? 'bg-primary-light text-primary border border-primary/20 flex items-center gap-1.5' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
                             @if($role->is_global) <span class="w-1 h-1 bg-primary rounded-full anime-pulse"></span> @endif
-                            {{ $role->is_global ? 'Global' : 'App-Specific' }}
+                            {{ $role->is_global ? 'Global' : 'Workspace-Specific' }}
                         </span>
                     </div>
 
@@ -189,14 +189,14 @@
                                         </div>
                                         <span
                                             class="ml-4 text-[10px] font-black text-slate-700 uppercase tracking-widest">Global
-                                            Role (All Apps)</span>
+                                            Role (All Workspaces)</span>
                                     </button>
 
                                     @if(!$is_global)
                                         <div class="animate-in fade-in slide-in-from-top-2 relative">
                                             <select wire:model="app_id"
                                                 class="block w-full px-5 py-4 text-[10px] font-black uppercase text-slate-800 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 transition-all appearance-none cursor-pointer">
-                                                <option value="">Select App</option>
+                                                <option value="">Select Workspace</option>
                                                 @foreach($apps as $app)
                                                     <option wire:key="app-opt-{{ $app->id }}" value="{{ $app->id }}">
                                                         {{ strtoupper($app->name) }}

@@ -22,6 +22,12 @@ class User extends Authenticatable
         'email',
         'password',
         'is_active',
+        'phone',
+        'otp_enabled',
+        'last_login_at',
+        'last_login_ip',
+        'last_login_device',
+        'last_login_location',
     ];
 
     /**
@@ -45,6 +51,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'otp_enabled' => 'boolean',
+            'last_login_at' => 'datetime',
         ];
     }
     public function appAccesses()

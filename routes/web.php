@@ -40,6 +40,7 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\AdminMiddleware
     Route::get('/permissions', \App\Livewire\Admin\PermissionManager::class)->name('permissions');
     Route::get('/apps', \App\Livewire\Admin\AppManager::class)->name('apps');
     Route::get('/sso-sessions', \App\Livewire\Admin\SsoSessions::class)->name('sso-sessions');
+    Route::get('/settings', \App\Livewire\Admin\SettingsManager::class)->name('settings');
 });
 
 Route::get('/sso/callback', \App\Livewire\SsoLoginHandler::class)->name('sso.callback');

@@ -12,10 +12,10 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">
-                        Registered <span class="text-primary">Apps</span>
+                        Workspace <span class="text-primary">Manager</span>
                     </h1>
-                    <p class="text-sm font-semibold text-slate-500 mt-2">Manage and configure all registered
-                        applications in the system.</p>
+                    <p class="text-sm font-semibold text-slate-500 mt-2">Manage and configure all integrated
+                        Business modules in the system.</p>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
                 <svg class="mr-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path d="M12 4v16m8-8H4" />
                 </svg>
-                Add New App
+                New Workspace
             </button>
         </div>
     </div>
@@ -36,7 +36,7 @@
                 <thead class="bg-slate-50/50">
                     <tr>
                         <th scope="col" class="py-6 pl-10 pr-3 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">App
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Workspace
                                 Name</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
@@ -58,8 +58,13 @@
                             <td class="whitespace-nowrap py-6 pl-10 pr-3">
                                 <div class="flex items-center gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center border border-primary/10 text-primary font-black text-xs">
-                                        {{ substr($app->name, 0, 1) }}
+                                        class="w-10 h-10 rounded-xl bg-primary-light flex items-center justify-center border border-primary/10 text-primary font-black text-xs overflow-hidden">
+                                        @if($app->icon)
+                                            <img src="{{ Storage::url($app->icon) }}" alt="{{ $app->name }}"
+                                                class="w-full h-full object-cover">
+                                        @else
+                                            {{ substr($app->name, 0, 1) }}
+                                        @endif
                                     </div>
                                     <div class="flex flex-col">
                                         <span
@@ -112,7 +117,7 @@
                                     </svg>
                                 </button>
                                 <button wire:click="delete({{ $app->id }})"
-                                    wire:confirm="Are you sure you want to delete this app? This will stop it from connecting to the system."
+                                    wire:confirm="Are you sure you want to delete this workspace? This will stop it from connecting to the system."
                                     class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-95">
                                     <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
@@ -165,15 +170,61 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight" id="modal-title">
-                            {{ $isEditing ? 'Edit App' : 'Add New App' }}
+                            {{ $isEditing ? 'Modify Workspace' : 'Add New Workspace' }}
                         </h3>
                     </div>
 
                     <div class="space-y-6">
+                        <!-- Icon Upload Section -->
+                        <div class="flex items-center gap-6 p-4 bg-slate-50 rounded-[2rem] border border-slate-100">
+                            <div class="relative group">
+                                <div
+                                    class="w-20 h-20 rounded-2xl bg-white border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden transition-all group-hover:border-primary/50">
+                                    @if($icon)
+                                        <img src="{{ $icon->temporaryUrl() }}" class="w-full h-full object-cover">
+                                    @elseif($existingIcon)
+                                        <img src="{{ Storage::url($existingIcon) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <svg class="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    @endif
+
+                                    <div wire:loading wire:target="icon"
+                                        class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
+                                        <div
+                                            class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex-1">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">App
+                                    Icon</label>
+                                <div class="relative">
+                                    <input type="file" wire:model="icon"
+                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        accept="image/*">
+                                    <button type="button"
+                                        class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-tight text-slate-600 hover:border-primary hover:text-primary transition-all">
+                                        {{ ($icon || $existingIcon) ? 'Change Icon' : 'Upload Icon' }}
+                                    </button>
+                                </div>
+                                <p class="text-[9px] text-slate-400 mt-2">Recommended: Square PNG/JPG, max 1MB.</p>
+                                @error('icon') <span
+                                    class="text-rose-500 text-[10px] font-bold mt-1 block uppercase">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-2 gap-6">
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Workspace
                                     Name</label>
                                 <input wire:model="name" type="text"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
@@ -184,8 +235,8 @@
                             </div>
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
-                                    ID (Slug)</label>
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Unique
+                                    Identifier (Slug)</label>
                                 <input wire:model="slug" type="text"
                                     class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all font-mono"
                                     placeholder="sales-portal">
@@ -223,7 +274,7 @@
 
                         <div class="relative">
                             <label
-                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">App
+                                class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Service
                                 Status</label>
                             <select wire:model="status"
                                 class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all cursor-pointer appearance-none">
@@ -248,7 +299,7 @@
                 <div class="mt-10 flex gap-4">
                     <button wire:click="save" type="button"
                         class="flex-1 px-6 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        Save App
+                        Save Workspace
                     </button>
                     <button @click="show = false" type="button"
                         class="px-6 py-5 bg-slate-50 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all">

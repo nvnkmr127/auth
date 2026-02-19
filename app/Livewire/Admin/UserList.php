@@ -22,6 +22,8 @@ class UserList extends Component
     public $email = '';
     public $password = '';
     public $password_confirmation = '';
+    public $phone = '';
+    public $otp_enabled = false;
 
     public function updatedSearch()
     {
@@ -33,6 +35,8 @@ class UserList extends Component
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . ($this->editId ?? 'NULL'),
+            'phone' => 'nullable|string|max:20',
+            'otp_enabled' => 'boolean',
         ];
 
         if (!$this->isEditing) {
@@ -57,6 +61,8 @@ class UserList extends Component
         $this->editId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->phone = $user->phone;
+        $this->otp_enabled = $user->otp_enabled;
         $this->password = '';
         $this->password_confirmation = '';
 
@@ -75,6 +81,8 @@ class UserList extends Component
             $updateData = [
                 'name' => $this->name,
                 'email' => $this->email,
+                'phone' => $this->phone,
+                'otp_enabled' => $this->otp_enabled,
             ];
 
             if ($this->password) {
@@ -89,6 +97,8 @@ class UserList extends Component
             $user = User::create([
                 'name' => $this->name,
                 'email' => $this->email,
+                'phone' => $this->phone,
+                'otp_enabled' => $this->otp_enabled,
                 'password' => Hash::make($this->password),
             ]);
 
@@ -119,6 +129,8 @@ class UserList extends Component
         $this->email = '';
         $this->password = '';
         $this->password_confirmation = '';
+        $this->phone = '';
+        $this->otp_enabled = false;
         $this->editId = null;
         $this->resetValidation();
     }

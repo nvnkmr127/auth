@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class App extends Model
 {
-    protected $fillable = ['name', 'slug', 'domain', 'status', 'sync_token'];
+    protected $fillable = ['name', 'slug', 'domain', 'icon', 'status', 'sync_token'];
 
     public function userAccesses()
     {

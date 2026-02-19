@@ -6,10 +6,11 @@ use App\Models\App;
 use App\Services\AuditService;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 
 class AppManager extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $showModal = false;
     public $isEditing = false;
@@ -21,6 +22,8 @@ class AppManager extends Component
     public $domain = '';
     public $sync_token = '';
     public $status = 'active';
+    public $icon;
+    public $existingIcon;
 
     protected function rules()
     {
@@ -30,6 +33,7 @@ class AppManager extends Component
             'domain' => 'nullable|url|max:255',
             'sync_token' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive,maintenance',
+            'icon' => $this->icon ? 'nullable|image|max:1024' : 'nullable',
         ];
     }
 
@@ -49,6 +53,7 @@ class AppManager extends Component
         $this->domain = $app->domain;
         $this->sync_token = $app->sync_token;
         $this->status = $app->status;
+        $this->existingIcon = $app->icon;
 
         $this->isEditing = true;
         $this->showModal = true;
@@ -155,31 +160,31 @@ class AppManager extends Component
     {
         $this->validate();
 
+        $data = [
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'domain' => $this->domain,
+            'sync_token' => $this->sync_token,
+            'status' => $this->status,
+        ];
+
+        if ($this->icon) {
+            $data['icon'] = $this->icon->store('app-icons', 'public');
+        }
+
         if ($this->isEditing) {
             $app = App::findOrFail($this->editId);
             $oldValues = $app->toArray();
 
-            $app->update([
-                'name' => $this->name,
-                'slug' => $this->slug,
-                'domain' => $this->domain,
-                'sync_token' => $this->sync_token,
-                'status' => $this->status,
-            ]);
+            $app->update($data);
 
             $audit->log('app.updated', 'Apps', $app, ['old' => $oldValues, 'new' => $app->toArray()]);
-            $this->dispatch('notify', message: 'Application updated successfully.');
+            $this->dispatch('notify', message: 'Workspace updated successfully.');
         } else {
-            $app = App::create([
-                'name' => $this->name,
-                'slug' => $this->slug,
-                'domain' => $this->domain,
-                'sync_token' => $this->sync_token,
-                'status' => $this->status,
-            ]);
+            $app = App::create($data);
 
             $audit->log('app.created', 'Apps', $app, ['new' => $app->toArray()]);
-            $this->dispatch('notify', message: 'Application created successfully.');
+            $this->dispatch('notify', message: 'Workspace created successfully.');
         }
 
         $this->showModal = false;
@@ -191,7 +196,7 @@ class AppManager extends Component
         $app = App::findOrFail($id);
         $audit->log('app.deleted', 'Apps', $app, ['old' => $app->toArray()]);
         $app->delete();
-        $this->dispatch('notify', message: 'Application deleted successfully.');
+        $this->dispatch('notify', message: 'Workspace deleted successfully.');
     }
 
     public function resetForm()
@@ -201,6 +206,8 @@ class AppManager extends Component
         $this->domain = '';
         $this->sync_token = '';
         $this->status = 'active';
+        $this->icon = null;
+        $this->existingIcon = null;
         $this->editId = null;
         $this->resetValidation();
     }

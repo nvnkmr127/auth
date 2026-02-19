@@ -23,7 +23,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase leading-none">
-                    Manage <span class="text-primary">App Access</span>
+                    Manage <span class="text-primary">Workspace Access</span>
                 </h1>
                 <p class="text-sm font-semibold text-slate-500 mt-2">
                     Configure which applications and roles are assigned to <span
@@ -81,7 +81,7 @@
                                                 </option>
                                             @endforeach
                                         </optgroup>
-                                        <optgroup label="APP-SPECIFIC ROLES"
+                                        <optgroup label="WORKSPACE-SPECIFIC ROLES"
                                             class="text-[10px] font-black uppercase tracking-widest bg-white text-primary">
                                             @foreach($app->roles as $role)
                                                 <option value="{{ $role->id }}" @selected($accessState['role_id'] == $role->id)>
@@ -143,8 +143,8 @@
                         <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
-                <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">No Applications Found</h3>
-                <p class="text-xs font-semibold text-slate-400 mt-3">There are no applications registered in the system yet.
+                <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">No Workspaces Found</h3>
+                <p class="text-xs font-semibold text-slate-400 mt-3">There are no workspaces registered in the system yet.
                 </p>
             </div>
         @endif
@@ -160,7 +160,7 @@
             <div class="max-w-2xl">
                 <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-4">Security Policy</h3>
                 <p class="text-[11px] font-medium text-slate-400 leading-relaxed">
-                    Changes to user permissions take effect immediately across all applications to ensure security.
+                    Changes to user permissions take effect immediately across all workspaces to ensure security.
                 </p>
             </div>
             <div

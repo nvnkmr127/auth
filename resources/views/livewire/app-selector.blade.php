@@ -1,8 +1,9 @@
 <div class="px-6 py-12">
     <!-- Page Header -->
     <div class="max-w-7xl mx-auto mb-16 px-4">
-        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Authorized Applications</h1>
-        <p class="mt-2 text-lg text-gray-500 font-medium font-sans">Securely transition your single sign-on session to an authorized satellite service.</p>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Available Workspaces</h1>
+        <p class="mt-2 text-lg text-gray-500 font-medium font-sans">Seamlessly access your integrated business modules
+            via secure SSO gateway.</p>
     </div>
 
     @error('access')
@@ -43,16 +44,21 @@
 
                 <!-- Circular Icon Container -->
                 <div
-                    class="w-20 h-20 rounded-full {{ $app->has_access ? $color : 'bg-gray-100 text-gray-400' }} flex items-center justify-center mb-8 transition-transform group-hover:scale-105">
-                    <svg class="w-9 h-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        {!! $icon !!}
-                    </svg>
+                    class="w-20 h-20 rounded-full {{ $app->has_access ? $color : 'bg-gray-100 text-gray-400' }} flex items-center justify-center mb-8 transition-transform group-hover:scale-105 overflow-hidden">
+                    @if($app->icon)
+                        <img src="{{ Storage::url($app->icon) }}" alt="{{ $app->name }}" class="w-full h-full object-cover">
+                    @else
+                        <svg class="w-9 h-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            {!! $icon !!}
+                        </svg>
+                    @endif
                 </div>
 
                 <!-- Text Content -->
                 <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $app->name }}</h3>
                 <p class="text-sm font-medium text-gray-400 leading-relaxed mb-10 max-w-[240px]">
-                    Authorized satellite service. transition your secure <span class="capitalize">{{ $app->slug }}</span> session via SSO gateway.
+                    Enterprise-grade workspace. Securely transition your <span class="capitalize">{{ $app->slug }}</span>
+                    session via integrated gateway.
                 </p>
 
                 <!-- Full Width Action Button -->
@@ -60,7 +66,7 @@
                     @if($app->has_access)
                         <button wire:click="selectApp({{ $app->id }})"
                             class="w-full py-4 px-6 bg-[#0b0e14] hover:bg-black text-white rounded-2xl text-sm font-black tracking-tight transition-all active:scale-[0.98] shadow-lg shadow-black/10">
-                            Launch Application
+                            Open Workspace
                         </button>
                     @else
                         <button disabled

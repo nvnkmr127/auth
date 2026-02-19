@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'webhook_url' => env('WHATSAPP_WEBHOOK_URL'),
+        'api_key' => env('WHATSAPP_API_KEY'),
+    ],
+
 ];

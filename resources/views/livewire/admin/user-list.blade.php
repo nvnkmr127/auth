@@ -60,8 +60,12 @@
                                 Address</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">App
-                                Access</span>
+                            <span
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Workspaces</span>
+                        </th>
+                        <th scope="col" class="px-6 py-6 text-left">
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Last
+                                Active</span>
                         </th>
                         <th scope="col" class="relative py-6 pl-3 pr-10 text-right">
                             <span
@@ -93,8 +97,21 @@
                                 <div class="flex items-center gap-2">
                                     <span
                                         class="px-3 py-1 rounded-lg bg-primary-light text-[10px] font-black text-primary border border-primary/10 tracking-widest uppercase">
-                                        {{ $user->app_accesses_count }} APPS
+                                        {{ $user->app_accesses_count }} NODES
                                     </span>
+                                </div>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-6">
+                                <div class="flex flex-col">
+                                    @if($user->last_login_at)
+                                        <span
+                                            class="text-[10px] font-black text-slate-900 uppercase tracking-tight">{{ $user->last_login_at->diffForHumans() }}</span>
+                                        <span
+                                            class="text-[9px] text-slate-400 font-bold mt-1 uppercase tracking-widest">{{ $user->last_login_location ?? 'Unknown' }}</span>
+                                    @else
+                                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-tight">Never
+                                            Active</span>
+                                    @endif
                                 </div>
                             </td>
                             <td class="whitespace-nowrap py-6 pl-3 pr-10 text-right space-x-2">
@@ -191,6 +208,35 @@
                             @error('email') <span
                                 class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
                             @enderror
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 items-end">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Phone
+                                    Number (WhatsApp)</label>
+                                <input wire:model="phone" type="text"
+                                    class="block w-full px-5 py-4 text-sm font-bold bg-slate-50 border-transparent rounded-2xl focus:ring-4 focus:ring-primary/10 focus:bg-white focus:border-primary/20 transition-all"
+                                    placeholder="e.g. 919876543210">
+                                @error('phone') <span
+                                    class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-primary/10 transition-all cursor-pointer group"
+                                @click="$wire.set('otp_enabled', !$wire.get('otp_enabled'))">
+                                <div class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ring-0 appearance-none"
+                                    :class="$wire.otp_enabled ? 'bg-primary' : 'bg-slate-200'">
+                                    <span
+                                        class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                        :class="$wire.otp_enabled ? 'translate-x-4' : 'translate-x-0'"></span>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-black text-slate-900 uppercase tracking-tight">Enable
+                                        OTP</span>
+                                    <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Login
+                                        Verification</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-6">

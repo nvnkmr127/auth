@@ -21,8 +21,8 @@ class OtpService
             ->where('used', false)
             ->update(['used' => true]);
 
-        // Generate 6-digit code
-        $code = (string) rand(100000, 999999);
+        // Generate 6-digit code using cryptographically secure random
+        $code = (string) random_int(100000, 999999);
 
         // Create record
         UserOtp::create([

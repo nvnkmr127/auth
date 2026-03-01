@@ -123,4 +123,30 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Slug
+    |--------------------------------------------------------------------------
+    |
+    | This value is used to identify the application in the database for
+    | app-specific access control and SSO integration.
+    |
+    */
+
+    'slug' => env('APP_SLUG', 'laravel'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed Redirect Domains
+    |--------------------------------------------------------------------------
+    |
+    | These domains are allowed for post-logout redirects to prevent
+    | open redirect vulnerabilities.
+    |
+    */
+
+    'allowed_redirect_domains' => array_filter(
+        explode(',', (string) env('ALLOWED_REDIRECT_DOMAINS', ''))
+    ),
+
 ];

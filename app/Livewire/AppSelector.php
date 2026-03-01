@@ -23,14 +23,15 @@ class AppSelector extends Component
         } catch (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e) {
             $this->addError('access', $e->getMessage());
         } catch (\Exception $e) {
-            $user = Auth::user();
-            $isAdmin = $user ? ($user->isAdmin() ? 'YES' : 'NO') : 'N/A';
-            $debug = "User: " . ($user->email ?? 'Guest') . ", Admin: " . $isAdmin;
             $errorMessage = $e->getMessage();
-            \Illuminate\Support\Facades\Log::channel('single')->error("SSO Error: $errorMessage | Debug: $debug");
-            file_put_contents(storage_path('logs/sso_debug.log'), date('Y-m-d H:i:s') . " - Error: $errorMessage | Debug: $debug\n", FILE_APPEND);
+            \Illuminate\Support\Facades\Log::channel('single')->error("SSO Error: $errorMessage", [
+                'user_id' => Auth::id(),
+                'ip' => request()->ip(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
-            $this->addError('access', 'Error: ' . $errorMessage . " | Debug: " . $debug);
+            // Don't expose debug info or user email to the client
+            $this->addError('access', 'Unable to access the application. Please try again or contact support if the issue persists.');
         }
     }
 

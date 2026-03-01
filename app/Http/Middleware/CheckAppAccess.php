@@ -32,17 +32,18 @@ class CheckAppAccess
         }
 
         // 3. Identify Current App slug
-        $currentAppSlug = env('APP_SLUG');
+        // Use config() instead of env() as env() returns null when config is cached
+        $currentAppSlug = config('app.slug');
 
         if (!$currentAppSlug) {
             // If no app slug is configured, we assume this is the central Auth server
             // and we might not enforce specific app access, OR we enforce 'admin' access check.
             // For safety in this demo, accessing 'dashboard' implies we need access to 'dashboard' app or similar.
-            // But let's assume if APP_SLUG is missing, we don't enforce app-level restrictions 
+            // But let's assume if APP_SLUG is missing, we don't enforce app-level restrictions
             // (user just strictly needs to be a valid user).
 
             // However, the requirement says "Force logout if access revoked".
-            // This implies we MUST check against *something*. 
+            // This implies we MUST check against *something*.
             // Let's assume there is an "Auth Dashboard" app entry, or we skip.
             return $next($request);
         }

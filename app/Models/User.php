@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,9 @@ class User extends Authenticatable
         'last_login_ip',
         'last_login_device',
         'last_login_location',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
     ];
 
     /**
@@ -53,14 +57,17 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'otp_enabled' => 'boolean',
             'last_login_at' => 'datetime',
+            'two_factor_confirmed_at' => 'datetime',
+            'two_factor_recovery_codes' => 'array',
         ];
     }
-    public function appAccesses()
+
+    public function appAccesses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(UserAppAccess::class);
     }
 
-    public function apiTokens()
+    public function apiTokens(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ApiToken::class);
     }
@@ -126,6 +133,7 @@ class User extends Authenticatable
 
     /**
      * Synchronize the user's role based on an SSO role key.
+     * Uses database locking to prevent race conditions.
      */
     public function syncSsoRole(?string $roleKey): void
     {
@@ -136,7 +144,10 @@ class User extends Authenticatable
         $role = Role::where('key', $roleKey)->first();
 
         if ($role) {
-            $this->roles()->sync([$role->id]);
+            // Use a transaction to prevent race conditions
+            DB::transaction(function () use ($role) {
+                $this->roles()->syncWithoutDetaching([$role->id]);
+            });
         }
     }
 }

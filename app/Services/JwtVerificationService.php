@@ -55,8 +55,12 @@ class JwtVerificationService
         $expectedAudience = config('jwt.app_url');
         $expectedAppSlug = config('jwt.app_slug');
 
-        // Validate Audience if configured
-        if ($expectedAudience && $decoded->aud !== $expectedAudience) {
+        // Validate Audience - mandatory for security
+        if (!$expectedAudience) {
+            throw new RuntimeException("JWT audience (APP_URL) is not configured. This is a security requirement.");
+        }
+        
+        if ($decoded->aud !== $expectedAudience) {
              throw new RuntimeException("Invalid Audience: Expected $expectedAudience, got {$decoded->aud}");
         }
 

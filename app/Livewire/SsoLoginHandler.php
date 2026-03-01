@@ -31,7 +31,8 @@ class SsoLoginHandler extends Component
                 [
                     'name' => $payload->name ?? 'SSO User',
                     'password' => bcrypt(str()->random(16)),
-                    'is_active' => true
+                    'is_active' => true,
+                    'email_verified_at' => now() // Mark as verified since SSO provider verified the email
                 ]
             );
 
@@ -63,9 +64,17 @@ class SsoLoginHandler extends Component
             return redirect()->intended('/apps');
 
         } catch (RuntimeException $e) {
-            $this->error = "SSO Login Failed: " . $e->getMessage();
+            \Illuminate\Support\Facades\Log::error('SSO Login Failed - Runtime Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->error = 'SSO authentication failed. Please try again or contact support.';
         } catch (\Exception $e) {
-            $this->error = "An unexpected error occurred.";
+            \Illuminate\Support\Facades\Log::error('SSO Login Failed - Unexpected Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->error = 'SSO authentication failed. Please try again or contact support.';
         }
     }
 

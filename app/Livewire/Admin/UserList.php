@@ -118,6 +118,13 @@ class UserList extends Component
         }
 
         $user = User::findOrFail($id);
+        
+        // Prevent deletion of admin accounts to avoid locking out all administrators
+        if ($user->isAdmin()) {
+            $this->dispatch('notify', message: 'Cannot delete administrator accounts. Please remove admin privileges first.', type: 'error');
+            return;
+        }
+
         $audit->log('user.deleted', 'Users', $user, ['old' => $user->toArray()]);
         $user->delete();
         $this->dispatch('notify', message: 'User identity purged successfully.');

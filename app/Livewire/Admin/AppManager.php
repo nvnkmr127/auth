@@ -61,6 +61,14 @@ class AppManager extends Component
 
     public function syncConfig($id)
     {
+        // Rate limit sync operations to prevent abuse
+        $cacheKey = "sso_sync_rate_limit_{$id}";
+        if (cache()->get($cacheKey)) {
+            $this->dispatch('notify', message: 'Please wait before syncing again. Rate limit in effect.', type: 'warning');
+            return;
+        }
+        cache()->set($cacheKey, true, now()->addMinutes(1));
+
         $app = App::findOrFail($id);
 
         if (empty($app->domain) || empty($app->sync_token)) {
@@ -124,6 +132,7 @@ class AppManager extends Component
                 if ($existingRole) {
                     // If it's a global role (like super_admin), don't touch it or try to duplicate it
                     if ($existingRole->is_global) {
+                        \Illuminate\Support\Facades\Log::debug("Skipping global role '{$roleKey}' during sync for app '{$app->name}'");
                         continue;
                     }
 
@@ -133,9 +142,12 @@ class AppManager extends Component
                             'name' => $info['name'] ?? ucfirst($roleKey),
                             'description' => $info['description'] ?? '',
                         ]);
+                    } else {
+                        // If it belongs to ANOTHER app, log and skip to avoid unique constraint violation
+                        \Illuminate\Support\Facades\Log::warning(
+                            "Role '{$roleKey}' exists but belongs to app ID {$existingRole->app_id}, cannot sync to app ID {$app->id}"
+                        );
                     }
-                    // If it belongs to ANOTHER app, we can't sync it with this key (Unique constraint)
-                    // We skip it to avoid crashing
                     continue;
                 }
 

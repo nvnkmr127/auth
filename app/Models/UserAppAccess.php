@@ -23,31 +23,31 @@ class UserAppAccess extends Model
         });
     }
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function app()
+    public function app(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(App::class);
     }
 
-    public function role()
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function validateRoleBelongsToApp()
+    public function validateRoleBelongsToApp(): void
     {
         if ($this->role && $this->role->app_id && $this->role->app_id != $this->app_id) {
             throw new \InvalidArgumentException("The selected role does not belong to this application.");
         }
 
-        // Ensure status is valid
-        if (!in_array($this->status, ['active', 'suspended', 'inactive'])) {
-            // Fallback or error, for now we let it pass if it matches DB default, 
-            // but stricter validation could be added here.
+        // Validate status is one of the allowed values
+        $allowedStatuses = ['active', 'suspended', 'inactive'];
+        if ($this->status && !in_array($this->status, $allowedStatuses)) {
+            throw new \InvalidArgumentException("Invalid status. Allowed values are: " . implode(', ', $allowedStatuses));
         }
     }
 }

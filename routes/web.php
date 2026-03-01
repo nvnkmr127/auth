@@ -3,12 +3,15 @@
 use App\Livewire\Auth\LoginForm;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\AppSelector;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', LoginForm::class)->name('login')->middleware('guest');
+// Apply rate limiting to login route
+Route::get('/login', LoginForm::class)->name('login')->middleware(['guest', 'throttle:login']);
 
 Route::match(['get', 'post'], '/logout', function (Illuminate\Http\Request $request) {
     Auth::logout();
@@ -16,8 +19,22 @@ Route::match(['get', 'post'], '/logout', function (Illuminate\Http\Request $requ
     session()->regenerateToken();
 
     $redirect = $request->query('redirect');
-    if ($redirect && filter_var($redirect, FILTER_VALIDATE_URL)) {
-        return redirect()->away($redirect);
+    
+    // Only allow redirects to whitelisted domains to prevent open redirect attacks
+    if ($redirect) {
+        $allowedDomains = config('app.allowed_redirect_domains', []);
+        $parsedUrl = parse_url($redirect);
+        $redirectDomain = $parsedUrl['host'] ?? null;
+        
+        // Validate redirect is to an allowed domain or relative path
+        if ($redirectDomain) {
+            if (in_array($redirectDomain, $allowedDomains)) {
+                return redirect()->away($redirect);
+            }
+        } elseif (str_starts_with($redirect, '/')) {
+            // Allow relative paths
+            return redirect($redirect);
+        }
     }
 
     return redirect('/');

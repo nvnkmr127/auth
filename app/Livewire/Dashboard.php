@@ -23,12 +23,12 @@ class Dashboard extends Component
     {
         $user = Auth::user();
 
-        // Basic personal stats
+        // Optimized stats with eager loading to prevent N+1 queries
         $stats = [
             'apps_count' => $user->appAccesses()->count(),
             'total_users' => User::count(),
             'total_apps' => App::count(),
-            'recent_logs' => AuditLog::with('target')
+            'recent_logs' => AuditLog::with('target:id,name,email')
                 ->where('user_id', $user->id)
                 ->latest()
                 ->take(5)

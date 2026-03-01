@@ -101,14 +101,16 @@ class RoleManager extends Component
     public function delete($id, AuditService $audit)
     {
         $role = Role::findOrFail($id);
-        // Prevent deleting critical system roles if needed, e.g. super_admin
+        
+        // Prevent deleting critical system roles
         if (in_array($role->key, ['super_admin'])) {
-            // Flash error
+            $this->dispatch('notify', message: 'Cannot delete the super_admin role as it is a critical system role.', type: 'error');
             return;
         }
 
         $audit->log('role.deleted', 'Roles', $role, ['old' => $role->toArray()]);
         $role->delete();
+        $this->dispatch('notify', message: 'Role deleted successfully.');
     }
 
     public function resetForm()

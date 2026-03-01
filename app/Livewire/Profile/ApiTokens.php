@@ -20,11 +20,14 @@ class ApiTokens extends Component
         ]);
 
         $token = Str::random(40);
+        
+        // Use configurable expiry period (default 6 months)
+        $expiryMonths = config('auth.api_token_expiry_months', 6);
 
         Auth::user()->apiTokens()->create([
             'name' => $this->name,
             'token' => hash('sha256', $token),
-            'expires_at' => now()->addMonths(6),
+            'expires_at' => now()->addMonths($expiryMonths),
         ]);
 
         $this->plainTextToken = $token;

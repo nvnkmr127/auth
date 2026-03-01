@@ -10,5 +10,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::call(function () {
-    UsedSsoToken::where('expires_at', '<', now())->delete();
+    try {
+        $deletedCount = UsedSsoToken::where('expires_at', '<', now())->delete();
+        \Illuminate\Support\Facades\Log::debug("Cleaned up {$deletedCount} expired SSO tokens.");
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Failed to cleanup expired SSO tokens: ' . $e->getMessage());
+    }
 })->hourly();

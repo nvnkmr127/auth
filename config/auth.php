@@ -112,4 +112,15 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Token Expiry
+    |--------------------------------------------------------------------------
+    |
+    | This value defines the default expiry period for API tokens in months.
+    |
+    */
+
+    'api_token_expiry_months' => env('AUTH_API_TOKEN_EXPIRY_MONTHS', 6),
+
 ];

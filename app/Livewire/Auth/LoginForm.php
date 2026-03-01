@@ -34,8 +34,9 @@ class LoginForm extends Component
         if (Auth::validate(['email' => $this->email, 'password' => $this->password])) {
             $user = \App\Models\User::where('email', $this->email)->first();
 
-            if (!$user->is_active) {
-                $this->addError('email', 'This account is inactive.');
+            if (!$user || !$user->is_active) {
+                // Use generic error message to prevent user enumeration
+                $this->addError('email', 'The provided credentials do not match our records.');
                 return;
             }
 
@@ -55,6 +56,7 @@ class LoginForm extends Component
             return redirect()->intended(route('apps.index'));
         }
 
+        // Use generic error message to prevent user enumeration
         $this->addError('email', 'The provided credentials do not match our records.');
     }
 
@@ -83,13 +85,15 @@ class LoginForm extends Component
         // Simple Geolocation (Optional/Best Effort)
         $location = 'Unknown';
         try {
-            $response = \Illuminate\Support\Facades\Http::get("http://ip-api.com/json/{$ip}");
+            $response = \Illuminate\Support\Facades\Http::withTimeout(5)
+                ->get("https://ip-api.com/json/{$ip}");
             if ($response->successful()) {
                 $geo = $response->json();
                 $location = ($geo['city'] ?? 'Unknown') . ', ' . ($geo['country'] ?? 'Unknown');
             }
         } catch (\Exception $e) {
-            // Fail silently
+            // Fail silently - location is not critical
+            \Illuminate\Support\Facades\Log::debug('Geolocation lookup failed: ' . $e->getMessage());
         }
 
         $user->update([

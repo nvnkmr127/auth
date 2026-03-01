@@ -115,8 +115,8 @@
                     <div class="anime-in-fade" style="animation-delay: 100ms">
                         <div class="flex items-center justify-between ml-1 mb-2">
                             <label for="password" class="block text-sm font-bold text-slate-700">Password</label>
-                            <a href="#"
-                                class="text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors">Forgot?</a>
+                            <a href="{{ route('password.request') ?? '#' }}"
+                                class="text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors {{ !route('password.request', [], false) ? 'pointer-events-none opacity-50' : '' }}">Forgot?</a>
                         </div>
                         <input wire:model="password" id="password" name="password" type="password"
                             autocomplete="current-password" required placeholder="••••••••" @focus="isCovering = true"
@@ -149,7 +149,7 @@
                         <label for="otpCode" class="block text-sm font-bold text-slate-700 ml-1 mb-2">Verification
                             Code</label>
                         <input wire:model="otpCode" id="otpCode" name="otpCode" type="text" maxlength="6" required
-                            placeholder="000000"
+                            placeholder="000000" autocomplete="one-time-code"
                             class="block w-full text-center text-2xl tracking-[0.5em] font-black rounded-2xl border-0 py-4 px-5 glow-input hover:bg-slate-100 transition-colors @error('otpCode') ring-2 ring-red-500/20 @enderror">
                         @error('otpCode')
                             <p class="mt-2 text-xs font-semibold text-red-500 ml-1">{{ $message }}</p>
@@ -184,7 +184,7 @@
 
         <p class="mt-8 text-center text-sm text-slate-500 font-medium">
             Don't have an account?
-            <a href="#" class="text-amber-600 hover:text-amber-700 font-bold transition-colors">Create one now</a>
+            <a href="{{ route('register') ?? '#' }}" class="text-amber-600 hover:text-amber-700 font-bold transition-colors {{ !route('register', [], false) ? 'pointer-events-none opacity-50' : '' }}">Create one now</a>
         </p>
     </div>
 

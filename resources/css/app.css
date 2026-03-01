@@ -9,12 +9,13 @@
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-primary: #7c3aed;
-    --color-primary-light: #f5f3ff;
-    --color-primary-dark: #6d28d9;
+    /* Primary color matches the amber/orange gradient used throughout the UI */
+    --color-primary: #d97706;
+    --color-primary-light: #fef3c7;
+    --color-primary-dark: #b45309;
 
     --shadow-premium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.15);
+    --shadow-glow: 0 0 20px rgba(217, 119, 6, 0.15);
 }
 
 @layer base {
@@ -56,7 +57,7 @@
         letter-spacing: 0.1em;
     }
 
-    /* Custom Scrollbar */
+    /* Custom Scrollbar - WebKit browsers */
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -68,6 +69,12 @@
 
     ::-webkit-scrollbar-thumb {
         @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+    }
+
+    /* Custom Scrollbar - Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: theme('colors.slate.200') transparent;
     }
 }
 
@@ -111,6 +118,7 @@
         background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
             linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
         background-size: 40px 40px;
+        -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
         mask-image: radial-gradient(circle at center, black, transparent 80%);
     }
 
@@ -143,12 +151,14 @@
 
     .is-covering-eyes .bear-arm-left {
         /* Calibrated to land exactly over left eye at cy=85 */
-        transform: translateY(-50px) translateX(25px) rotate(5deg);
+        /* Using responsive units with clamp for different screen sizes */
+        transform: translateY(clamp(-40px, -25vw, -50px)) translateX(clamp(20px, 12vw, 25px)) rotate(5deg);
     }
 
     .is-covering-eyes .bear-arm-right {
         /* Calibrated to land exactly over right eye at cy=85 */
-        transform: translateY(-50px) translateX(-25px) rotate(-5deg);
+        /* Using responsive units with clamp for different screen sizes */
+        transform: translateY(clamp(-40px, -25vw, -50px)) translateX(clamp(-20px, -12vw, -25px)) rotate(-5deg);
     }
 
     .is-covering-eyes .bear-head {

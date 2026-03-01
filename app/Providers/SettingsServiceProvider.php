@@ -26,8 +26,11 @@ class SettingsServiceProvider extends ServiceProvider
             $settings = Setting::all()->pluck('value', 'key');
 
             if ($settings->isEmpty()) {
+                \Illuminate\Support\Facades\Log::debug('SettingsServiceProvider: No settings found in database.');
                 return;
             }
+
+            \Illuminate\Support\Facades\Log::debug('SettingsServiceProvider: Overriding configs from DB', ['count' => $settings->count()]);
 
             // Override App Name
             if ($appName = $settings->get('app_name')) {
@@ -49,6 +52,7 @@ class SettingsServiceProvider extends ServiceProvider
             }
 
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('SettingsServiceProvider Error', ['message' => $e->getMessage()]);
             // Fail gracefully if DB connection is not yet available
             return;
         }

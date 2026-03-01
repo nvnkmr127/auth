@@ -31,18 +31,16 @@ class SsoLoginHandler extends Component
                 [
                     'name' => $payload->name ?? 'SSO User',
                     'is_active' => true,
-                    'email_verified_at' => now() // Mark as verified since SSO provider verified the email
+                    'email_verified_at' => now(),
+                    // Ensure password is set for new users to avoid QueryException
+                    'password' => $payload->password ?? \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(32))
                 ]
             );
 
-            // Set a random password only for new users
-            if (!$user->wasRecentlyCreated && !$user->password) {
-                $user->update(['password' => bcrypt(str()->random(16))]);
-            } elseif ($user->wasRecentlyCreated) {
-                $user->update(['password' => bcrypt(str()->random(16))]);
-            }
+            \Illuminate\Support\Facades\Log::info('SSO User found or created', ['email' => $payload->email, 'id' => $user->id]);
 
             if (!$user->is_active) {
+                \Illuminate\Support\Facades\Log::warning('SSO Login blocked - User suspended', ['email' => $payload->email]);
                 $this->error = 'Account is suspended.';
                 $audit->log('user.sso_login_failed', 'IdentityHub', null, [
                     'email' => $payload->email,

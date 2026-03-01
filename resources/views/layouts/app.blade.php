@@ -296,12 +296,12 @@
                         <div class="flex flex-col items-end">
                             <span class="text-xs font-bold text-gray-900 leading-none">{{ Auth::user()?->name }}</span>
                             <span
-                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{{ Auth::user()?->roles->first()?->name ?? 'Super Admin' }}</span>
+                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{{ Auth::user()?->roles?->first()?->name ?? 'Super Admin' }}</span>
                         </div>
                         <div
                             class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-sm overflow-hidden ring-2 ring-transparent hover:ring-primary/20 transition-all cursor-pointer">
                             <span
-                                class="text-xs font-black text-primary uppercase">{{ substr(Auth::user()?->name ?? 'U', 0, 1) }}</span></span>
+                                class="text-xs font-black text-primary uppercase">{{ substr(Auth::user()?->name ?? 'U', 0, 1) }}</span>
                         </div>
 
                         <form method="POST" action="{{ route('logout') }}" class="flex">

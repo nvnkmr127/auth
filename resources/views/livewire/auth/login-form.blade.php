@@ -115,8 +115,12 @@
                     <div class="anime-in-fade" style="animation-delay: 100ms">
                         <div class="flex items-center justify-between ml-1 mb-2">
                             <label for="password" class="block text-sm font-bold text-slate-700">Password</label>
-                            <a href="{{ route('password.request') ?? '#' }}"
-                                class="text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors {{ !route('password.request', [], false) ? 'pointer-events-none opacity-50' : '' }}">Forgot?</a>
+                            @php
+                                $forgotRoute = app('router')->has('password.request') ? route('password.request') : '#';
+                                $hasForgotRoute = $forgotRoute !== '#';
+                            @endphp
+                            <a href="{{ $forgotRoute }}"
+                                class="text-sm font-bold text-amber-600 hover:text-amber-700 transition-colors {{ !$hasForgotRoute ? 'pointer-events-none opacity-50' : '' }}">Forgot?</a>
                         </div>
                         <input wire:model="password" id="password" name="password" type="password"
                             autocomplete="current-password" required placeholder="••••••••" @focus="isCovering = true"
@@ -184,7 +188,11 @@
 
         <p class="mt-8 text-center text-sm text-slate-500 font-medium">
             Don't have an account?
-            <a href="{{ route('register') ?? '#' }}" class="text-amber-600 hover:text-amber-700 font-bold transition-colors {{ !route('register', [], false) ? 'pointer-events-none opacity-50' : '' }}">Create one now</a>
+            @php
+                $registerRoute = app('router')->has('register') ? route('register') : '#';
+                $hasRegisterRoute = $registerRoute !== '#';
+            @endphp
+            <a href="{{ $registerRoute }}" class="text-amber-600 hover:text-amber-700 font-bold transition-colors {{ !$hasRegisterRoute ? 'pointer-events-none opacity-50' : '' }}">Create one now</a>
         </p>
     </div>
 

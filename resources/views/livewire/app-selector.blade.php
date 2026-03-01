@@ -64,10 +64,10 @@
                 <!-- Full Width Action Button -->
                 <div class="w-full mt-auto">
                     @if($app->has_access)
-                        <button wire:click="selectApp({{ $app->id }})"
-                            class="w-full py-4 px-6 bg-[#0b0e14] hover:bg-black text-white rounded-2xl text-sm font-black tracking-tight transition-all active:scale-[0.98] shadow-lg shadow-black/10">
+                        <a href="{{ route('apps.open', $app) }}" target="_blank"
+                            class="block w-full py-4 px-6 bg-[#0b0e14] hover:bg-black text-white rounded-2xl text-sm font-black text-center tracking-tight transition-all active:scale-[0.98] shadow-lg shadow-black/10">
                             Open Workspace
-                        </button>
+                        </a>
                     @else
                         <button disabled
                             class="w-full py-4 px-6 bg-gray-50 text-gray-400 border border-gray-100 rounded-2xl text-sm font-bold tracking-tight cursor-not-allowed">

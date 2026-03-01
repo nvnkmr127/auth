@@ -44,6 +44,15 @@ Route::get('/dashboard', \App\Livewire\Dashboard::class)->name('dashboard')->mid
 
 Route::get('/apps', AppSelector::class)->name('apps.index')->middleware('auth');
 
+Route::get('/apps/{app}/open', function (\App\Models\App $app, \App\Services\SsoTokenService $ssoService) {
+    if (!Auth::user()->isAdmin() && !Auth::user()->appAccesses()->where('app_id', $app->id)->exists()) {
+        abort(403, 'You do not have access to this application.');
+    }
+
+    $url = $ssoService->generateSsoUrl(Auth::user(), $app);
+    return redirect()->away($url);
+})->name('apps.open')->middleware('auth');
+
 Route::prefix('profile')->middleware(['auth'])->name('profile.')->group(function () {
     Route::get('/api-tokens', \App\Livewire\Profile\ApiTokens::class)->name('api-tokens');
     Route::get('/security', \App\Livewire\Profile\Security::class)->name('security');

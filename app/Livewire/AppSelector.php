@@ -16,6 +16,7 @@ class AppSelector extends Component
 
             // Generate SSO URL (validates access internally)
             $url = $ssoService->generateSsoUrl($user, $app);
+            \Illuminate\Support\Facades\Log::info("Dispatching open-url for user {$user->id} to app {$app->id}: {$url}");
 
             // Open in new tab via browser event
             $this->dispatch('open-url', url: $url);

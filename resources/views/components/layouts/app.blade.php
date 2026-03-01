@@ -34,8 +34,7 @@
     @endif
 </head>
 
-<body class="h-full font-sans antialiased text-slate-900 bg-[#f8fafc]"
-    @open-url.window="window.open($event.detail.url, '_blank')">
+<body class="h-full font-sans antialiased text-slate-900 bg-[#f8fafc]">
     <div x-data="{ sidebarOpen: false }" class="min-h-full">
 
         <!-- Mobile Sidebar Overlay -->

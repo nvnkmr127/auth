@@ -41,5 +41,11 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\Gate::after(function ($user, $ability) {
             return $user->hasPermission($ability);
         });
+
+        // Register Security Listeners
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Login::class,
+            \App\Listeners\DetectSuspiciousLogin::class
+        );
     }
 }

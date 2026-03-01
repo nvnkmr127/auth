@@ -8,6 +8,28 @@ use Livewire\Component;
 
 class Devices extends Component
 {
+    public function mount()
+    {
+        $user = Auth::user();
+        $ip = request()->ip();
+        $ua = request()->userAgent();
+
+        if ($user && $ip) {
+            // Ensure the current device is registered if it's the first time
+            UserDevice::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'ip_address' => $ip,
+                    'user_agent' => $ua,
+                ],
+                [
+                    'last_active_at' => now(),
+                    'is_trusted' => true // Trust the first device automatically
+                ]
+            );
+        }
+    }
+
     public function trustDevice($id)
     {
         $device = Auth::user()->devices()->findOrFail($id);

@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Configure rate limiters
+        \Illuminate\Support\Facades\RateLimiter::for('login', function (\Illuminate\Http\Request $request) {
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute(5)->by($request->ip())
+                ->response(function () {
+                    return response()->json(['message' => 'Too many login attempts. Please try again later.'], 429);
+                });
+        });
+
         \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
             if ($user->isAdmin()) {
                 return true;

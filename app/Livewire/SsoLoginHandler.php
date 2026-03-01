@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Services\AuditService;
 use App\Services\JwtVerificationService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -12,8 +13,13 @@ class SsoLoginHandler extends Component
 {
     public $error = '';
 
-    public function mount(JwtVerificationService $jwtService, \App\Services\AuditService $audit)
+    public function mount(JwtVerificationService $jwtService, AuditService $audit)
     {
+        // 0. Redirect if already logged in to prevent "Token Reused" error on refresh
+        if (Auth::check()) {
+            return redirect()->intended('/dashboard');
+        }
+
         $token = request()->query('token');
 
         if (empty($token) || !is_string($token)) {
@@ -42,11 +48,16 @@ class SsoLoginHandler extends Component
             if (!$user->is_active) {
                 \Illuminate\Support\Facades\Log::warning('SSO Login blocked - User suspended', ['email' => $payload->email]);
                 $this->error = 'Account is suspended.';
-                $audit->log('user.sso_login_failed', 'IdentityHub', null, [
-                    'email' => $payload->email,
-                    'reason' => 'Account suspended',
-                    'ip' => request()->ip()
-                ]);
+
+                try {
+                    $audit->log('user.sso_login_failed', 'IdentityHub', null, [
+                        'email' => $payload->email,
+                        'reason' => 'Account suspended',
+                        'ip' => request()->ip()
+                    ]);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Audit Logging Failed', ['error' => $e->getMessage()]);
+                }
                 return;
             }
 
@@ -59,10 +70,14 @@ class SsoLoginHandler extends Component
             Auth::login($user);
 
             // 4. Audit
-            $audit->log('user.sso_login', 'IdentityHub', $user, [
-                'jti' => $payload->jti ?? 'unknown',
-                'ip' => request()->ip()
-            ]);
+            try {
+                $audit->log('user.sso_login', 'IdentityHub', $user, [
+                    'jti' => $payload->jti ?? 'unknown',
+                    'ip' => request()->ip()
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Audit Logging Failed', ['error' => $e->getMessage()]);
+            }
 
             // 5. Redirect
             return redirect()->intended('/dashboard');
@@ -84,6 +99,7 @@ class SsoLoginHandler extends Component
 
     public function render()
     {
-        return view('livewire.sso-login-handler')->layout('layouts.guest');
+        return view('livewire.sso-login-handler')
+            ->layout('layouts.guest');
     }
 }

@@ -17,3 +17,5 @@ Schedule::call(function () {
         \Illuminate\Support\Facades\Log::error('Failed to cleanup expired SSO tokens: ' . $e->getMessage());
     }
 })->hourly();
+
+Schedule::command('sessions:partition')->daily();

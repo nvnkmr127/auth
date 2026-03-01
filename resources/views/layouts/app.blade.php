@@ -16,6 +16,23 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @if($primaryColor = config('app.brand.primary'))
+        <style>
+            :root {
+                --color-primary:
+                    {{ $primaryColor }}
+                ;
+                --color-primary-dark:
+                    {{ $primaryColor }}
+                    CC;
+                /* Adding some transparency for hover/darker states if not specified */
+                --shadow-glow: 0 0 20px
+                    {{ $primaryColor }}
+                    26;
+            }
+        </style>
+    @endif
 </head>
 
 <body class="h-full font-sans antialiased text-slate-900 bg-[#f8fafc]">
@@ -91,6 +108,16 @@
                                             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                     </svg>
                                     API Tokens
+                                </a>
+
+                                <a href="{{ route('profile.devices') }}"
+                                    class="group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 {{ request()->routeIs('profile.devices') ? 'bg-primary/10 text-primary shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                                    <svg class="mr-3 h-5 w-5 {{ request()->routeIs('profile.devices') ? 'text-primary' : 'text-slate-500 group-hover:text-slate-300' }}"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path
+                                            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                    Trusted Devices
                                 </a>
                             </div>
                         </div>
@@ -350,11 +377,22 @@
                 this.messages = this.messages.filter(m => m.id !== id)
             },
             add(message, type = 'success') {
+                if (!message) return;
                 const id = Date.now()
                 this.messages.push({ id, text: message, type })
                 setTimeout(() => this.remove(id), 5000)
+            },
+            handleNotify(event) {
+                // Handle Livewire 3 detail structure
+                const detail = event.detail;
+                const message = detail.message || (typeof detail === 'string' ? detail : '');
+                const type = detail.type || 'success';
+                
+                if (message) {
+                    this.add(message, type);
+                }
             }
-        }" @notify.window="add($event.detail.message, $event.detail.type)"
+        }" @notify.window="handleNotify($event)"
         class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start z-[100]">
         <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
             <template x-for="msg in messages" :key="msg.id">

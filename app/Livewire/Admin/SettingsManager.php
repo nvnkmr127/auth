@@ -14,6 +14,7 @@ class SettingsManager extends Component
 
     public string $appName = '';
     public bool $mascotEnabled = true;
+    public string $brandPrimaryColor = '#d97706';
 
     public function mount()
     {
@@ -22,6 +23,7 @@ class SettingsManager extends Component
         $this->apiKey = Setting::get('whatsapp_api_key', config('services.whatsapp.api_key') ?? '');
         $this->appName = Setting::get('app_name', config('app.name'));
         $this->mascotEnabled = (bool) Setting::get('mascot_enabled', true);
+        $this->brandPrimaryColor = Setting::get('brand_primary_color', '#d97706');
     }
 
     public function save()
@@ -36,6 +38,7 @@ class SettingsManager extends Component
     {
         Setting::set('app_name', $this->appName);
         Setting::set('mascot_enabled', $this->mascotEnabled);
+        Setting::set('brand_primary_color', $this->brandPrimaryColor);
 
         $this->dispatch('notify', message: 'Branding settings saved and persisted.');
     }

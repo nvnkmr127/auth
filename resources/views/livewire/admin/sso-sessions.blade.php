@@ -11,7 +11,7 @@
         <div class="flex gap-4">
             <button wire:click="purgeGuestSessions"
                 class="px-6 py-3 bg-white text-[10px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 rounded-xl hover:text-red-500 hover:border-red-100 transition-all">
-                Prue Guests
+                Purge Guests
             </button>
         </div>
     </div>

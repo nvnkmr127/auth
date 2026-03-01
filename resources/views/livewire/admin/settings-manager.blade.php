@@ -107,6 +107,19 @@
                         </div>
                     </div>
 
+                    <div>
+                        <label
+                            class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Primary
+                            Brand Color</label>
+                        <div class="flex items-center gap-4">
+                            <input wire:model="brandPrimaryColor" type="color"
+                                class="w-16 h-12 bg-white border border-slate-100 rounded-xl cursor-pointer p-1">
+                            <input wire:model="brandPrimaryColor" type="text"
+                                class="flex-1 px-5 py-3 text-sm font-bold bg-slate-50 border-slate-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/20 transition-all font-mono"
+                                placeholder="#000000">
+                        </div>
+                    </div>
+
                     <div class="pt-4">
                         <button type="submit"
                             class="w-full px-6 py-4 bg-slate-50 text-slate-900 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:shadow-lg transition-all">

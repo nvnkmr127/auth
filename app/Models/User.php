@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(ApiToken::class);
     }
 
+    public function devices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserDevice::class);
+    }
+
     public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'user_roles')

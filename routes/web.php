@@ -19,13 +19,13 @@ Route::match(['get', 'post'], '/logout', function (Illuminate\Http\Request $requ
     session()->regenerateToken();
 
     $redirect = $request->query('redirect');
-    
+
     // Only allow redirects to whitelisted domains to prevent open redirect attacks
     if ($redirect) {
         $allowedDomains = config('app.allowed_redirect_domains', []);
         $parsedUrl = parse_url($redirect);
         $redirectDomain = $parsedUrl['host'] ?? null;
-        
+
         // Validate redirect is to an allowed domain or relative path
         if ($redirectDomain) {
             if (in_array($redirectDomain, $allowedDomains)) {
@@ -47,6 +47,7 @@ Route::get('/apps', AppSelector::class)->name('apps.index')->middleware('auth');
 Route::prefix('profile')->middleware(['auth'])->name('profile.')->group(function () {
     Route::get('/api-tokens', \App\Livewire\Profile\ApiTokens::class)->name('api-tokens');
     Route::get('/security', \App\Livewire\Profile\Security::class)->name('security');
+    Route::get('/devices', \App\Livewire\Profile\Devices::class)->name('devices');
 });
 
 Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('admin.')->group(function () {

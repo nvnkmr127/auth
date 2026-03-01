@@ -41,7 +41,7 @@
                                 </svg>
                             </div>
                             <span class="text-xs font-bold text-white tracking-widest uppercase truncate">
-                                {{ Auth::user()->currentTeam?->name ?? 'Control Center' }}
+                                {{ Auth::user()?->currentTeam?->name ?? 'Control Center' }}
                             </span>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                         <div class="relative">
                             <div
                                 class="w-11 h-11 rounded-2xl bg-primary flex items-center justify-center text-white font-black text-xs shadow-lg shadow-primary/20">
-                                {{ substr(Auth::user()->name ?? 'SA', 0, 2) }}
+                                {{ substr(Auth::user()?->name ?? 'SA', 0, 2) }}
                             </div>
                             <div
                                 class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-950 rounded-full shadow-sm">
@@ -194,7 +194,7 @@
                         <div class="ml-3 flex-1 min-w-0">
                             <div class="flex items-center gap-2">
                                 <p class="text-xs font-bold text-white truncate uppercase tracking-tight">
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()?->name }}
                                 </p>
                             </div>
                             <span
@@ -294,14 +294,14 @@
                     <!-- User Information -->
                     <div class="flex items-center gap-4">
                         <div class="flex flex-col items-end">
-                            <span class="text-xs font-bold text-gray-900 leading-none">{{ Auth::user()->name }}</span>
+                            <span class="text-xs font-bold text-gray-900 leading-none">{{ Auth::user()?->name }}</span>
                             <span
-                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{{ Auth::user()->roles->first()?->name ?? 'Super Admin' }}</span>
+                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-1">{{ Auth::user()?->roles->first()?->name ?? 'Super Admin' }}</span>
                         </div>
                         <div
                             class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-sm overflow-hidden ring-2 ring-transparent hover:ring-primary/20 transition-all cursor-pointer">
                             <span
-                                class="text-xs font-black text-primary uppercase">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                                class="text-xs font-black text-primary uppercase">{{ substr(Auth::user()?->name ?? 'U', 0, 1) }}</span></span>
                         </div>
 
                         <form method="POST" action="{{ route('logout') }}" class="flex">

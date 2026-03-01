@@ -25,16 +25,22 @@ class SsoLoginHandler extends Component
             // 1. Verify Token
             $payload = $jwtService->verifyToken($token);
 
-            // 2. Find or Create User
-            $user = User::firstOrCreate(
+            // 2. Find or Update User
+            $user = User::updateOrCreate(
                 ['email' => $payload->email],
                 [
                     'name' => $payload->name ?? 'SSO User',
-                    'password' => bcrypt(str()->random(16)),
                     'is_active' => true,
                     'email_verified_at' => now() // Mark as verified since SSO provider verified the email
                 ]
             );
+
+            // Set a random password only for new users
+            if (!$user->wasRecentlyCreated && !$user->password) {
+                $user->update(['password' => bcrypt(str()->random(16))]);
+            } elseif ($user->wasRecentlyCreated) {
+                $user->update(['password' => bcrypt(str()->random(16))]);
+            }
 
             if (!$user->is_active) {
                 $this->error = 'Account is suspended.';
@@ -61,14 +67,14 @@ class SsoLoginHandler extends Component
             ]);
 
             // 5. Redirect
-            return redirect()->intended('/apps');
+            return redirect()->intended('/dashboard');
 
         } catch (RuntimeException $e) {
             \Illuminate\Support\Facades\Log::error('SSO Login Failed - Runtime Exception', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            $this->error = 'SSO authentication failed. Please try again or contact support.';
+            $this->error = $e->getMessage();
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('SSO Login Failed - Unexpected Error', [
                 'message' => $e->getMessage(),

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\UsedSsoToken;
+use App\Models\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -10,16 +10,25 @@ class SsoSessions extends Component
 {
     use WithPagination;
 
-    public function purgeExpired()
+    public function terminateSession($sessionId)
     {
-        UsedSsoToken::where('expires_at', '<', now())->delete();
-        $this->dispatch('notify', message: 'Expired tokens purged from vault.');
+        Session::where('id', $sessionId)->delete();
+        $this->dispatch('notify', message: 'Session terminated successfully.', type: 'success');
+    }
+
+    public function purgeGuestSessions()
+    {
+        Session::whereNull('user_id')->delete();
+        $this->dispatch('notify', message: 'Guest sessions cleared.', type: 'success');
     }
 
     public function render()
     {
         return view('livewire.admin.sso-sessions', [
-            'sessions' => UsedSsoToken::latest()->paginate(15),
+            'sessions' => Session::with('user')
+                ->whereNotNull('user_id')
+                ->orderBy('last_activity', 'desc')
+                ->paginate(15),
         ])->layout('layouts.app');
     }
 }

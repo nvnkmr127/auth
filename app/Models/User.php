@@ -90,9 +90,19 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->roles()
+        // Check direct global role assignment
+        if ($this->roles()
             ->where('is_global', true)
             ->where('key', 'super_admin')
+            ->exists()) {
+            return true;
+        }
+
+        // Check if user has been assigned super_admin via any app access
+        return $this->appAccesses()
+            ->whereHas('role', function ($query) {
+                $query->where('key', 'super_admin');
+            })
             ->exists();
     }
 

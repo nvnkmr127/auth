@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // Configure rate limiters
+        \Illuminate\Support\Facades\RateLimiter::for('login', function (\Illuminate\Http\Request $request) {
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute(5)->by($request->ip())
+                ->response(function () {
+                    return response()->json(['message' => 'Too many login attempts. Please try again later.'], 429);
+                });
+        });
+
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+            if ($user->isAdmin()) {
+                return true;
+            }
+        });
+
+        \Illuminate\Support\Facades\Gate::define('access-admin', function ($user) {
+            return $user->isAdmin();
+        });
+
+        // Use hasPermission for all other string-based abilities
+        \Illuminate\Support\Facades\Gate::after(function ($user, $ability) {
+            return $user->hasPermission($ability);
+        });
+
+        // Register Security Listeners
+        \Illuminate\Support\Facades\Event::listen(
+            \Illuminate\Auth\Events\Login::class,
+            \App\Listeners\DetectSuspiciousLogin::class
+        );
+    }
+}

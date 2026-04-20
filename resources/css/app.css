@@ -204,7 +204,7 @@
             transform: translateY(0);
         }
     }
-}
+
     .markdown-body {
         @apply text-slate-700 leading-relaxed;
     }

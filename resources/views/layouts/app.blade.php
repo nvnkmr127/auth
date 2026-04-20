@@ -201,6 +201,33 @@
                                     </a>
                                 </div>
                             </div>
+
+                            <div>
+                                <h3 class="px-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 mt-8">
+                                    Developer Help
+                                </h3>
+                                <div class="space-y-1">
+                                    <a href="{{ route('admin.docs.api') }}"
+                                        class="group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 {{ request()->routeIs('admin.docs.api') ? 'bg-primary/10 text-primary shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                                        <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.docs.api') ? 'text-primary' : 'text-slate-500 group-hover:text-slate-300' }}"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        API Documentation
+                                    </a>
+
+                                    <a href="{{ route('admin.docs.views') }}"
+                                        class="group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 {{ request()->routeIs('admin.docs.views') ? 'bg-primary/10 text-primary shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                                        <svg class="mr-3 h-5 w-5 {{ request()->routeIs('admin.docs.views') ? 'text-primary' : 'text-slate-500 group-hover:text-slate-300' }}"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path
+                                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                                        </svg>
+                                        View Creation Guide
+                                    </a>
+                                </div>
+                            </div>
                         @endauth
                     </nav>
                 </div>

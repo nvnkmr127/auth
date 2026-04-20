@@ -43,6 +43,18 @@
                             {{ $item['label'] }}
                         </button>
                     @endforeach
+
+                    <div class="pt-4 mt-4 border-t border-slate-800/50">
+                        <a 
+                            href="{{ route('profile.api-tokens') }}"
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-200 group rounded-xl border border-transparent"
+                        >
+                            <svg class="w-5 h-5 text-slate-500 group-hover:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                            </svg>
+                            Manage API Tokens
+                        </a>
+                    </div>
                 </nav>
             </div>
 
@@ -350,6 +362,20 @@ public function handle(Request $request, Closure $next)
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+
+                            <div class="mt-12 p-8 rounded-3xl bg-indigo-600/5 border border-indigo-600/10">
+                                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                                    <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                                    Token Management
+                                </h3>
+                                <p class="text-slate-400 mb-6 leading-relaxed">
+                                    To interact with our APIs or integrate satellite applications, you'll need to generate and manage API tokens. You can create tokens with specific scopes and rotation policies via the user profile.
+                                </p>
+                                <a href="{{ route('profile.api-tokens') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-colors">
+                                    Manage My API Tokens
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
                             </div>
                         </section>
                     @endif

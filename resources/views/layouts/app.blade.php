@@ -119,6 +119,16 @@
                                     </svg>
                                     Trusted Devices
                                 </a>
+
+                                <a href="{{ route('docs') }}"
+                                    class="group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 {{ request()->routeIs('docs') ? 'bg-primary/10 text-primary shadow-sm' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">
+                                    <svg class="mr-3 h-5 w-5 {{ request()->routeIs('docs') ? 'text-primary' : 'text-slate-500 group-hover:text-slate-300' }}"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                    API Documentation
+                                </a>
                             </div>
                         </div>
 

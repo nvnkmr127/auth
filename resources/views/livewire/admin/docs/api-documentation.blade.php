@@ -1,16 +1,16 @@
 <div class="min-h-screen">
     {{-- Decorative Background Elements --}}
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[35%] h-[35%] bg-purple-500/10 blur-[120px] rounded-full"></div>
+        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-amber-500/10 blur-[120px] rounded-full"></div>
+        <div class="absolute top-[20%] -right-[10%] w-[35%] h-[35%] bg-orange-500/10 blur-[120px] rounded-full"></div>
     </div>
 
     <div class="flex h-screen overflow-hidden">
         {{-- Sidebar --}}
-        <aside class="hidden lg:flex flex-col w-72 bg-slate-900/50 backdrop-blur-xl border-r border-slate-800 shrink-0">
+        <aside class="hidden lg:flex flex-col w-72 bg-slate-950 border-r border-slate-900 shrink-0">
             <div class="p-6">
                 <div class="flex items-center gap-3 px-2 mb-8">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg bg-amber-600 flex items-center justify-center shadow-lg shadow-amber-600/20">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
@@ -35,9 +35,9 @@
                     @foreach($navItems as $item)
                         <button 
                             wire:click="setSection('{{ $item['id'] }}')"
-                            class="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium transition-all duration-200 group rounded-xl {{ $activeSection === $item['id'] ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-600/20 shadow-[0_0_15px_rgba(79,70,229,0.1)]' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 border border-transparent' }}"
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium transition-all duration-200 group rounded-xl {{ $activeSection === $item['id'] ? 'bg-amber-600/10 text-amber-500 border border-amber-600/20 shadow-[0_0_15px_rgba(217,119,6,0.1)]' : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent' }}"
                         >
-                            <svg class="w-5 h-5 {{ $activeSection === $item['id'] ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-300' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 {{ $activeSection === $item['id'] ? 'text-amber-500' : 'text-slate-500 group-hover:text-slate-300' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}" />
                             </svg>
                             {{ $item['label'] }}
@@ -59,9 +59,9 @@
             </div>
 
             <div class="mt-auto p-6 border-t border-slate-800">
-                <div class="p-4 rounded-2xl bg-indigo-600/5 border border-indigo-600/10">
-                    <p class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-2">Need Help?</p>
-                    <p class="text-xs text-slate-400 leading-relaxed">Check our support channels or view audit logs in admin.</p>
+                <div class="p-4 rounded-2xl bg-amber-600/5 border border-amber-600/10">
+                    <p class="text-[10px] font-black text-amber-500 uppercase tracking-[0.2em] mb-2">Need Help?</p>
+                    <p class="text-[11px] text-slate-400 font-semibold leading-relaxed">Check our support channels or view audit logs in admin.</p>
                 </div>
             </div>
         </aside>
@@ -99,13 +99,13 @@
                                     Welcome to the Nexus Identity API documentation. This platform provides a centralized Single Sign-On (SSO) solution for all satellite applications.
                                 </p>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                                    <div class="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-indigo-500/50 transition-colors">
-                                        <h3 class="text-indigo-400 font-bold mb-2">Satellite Ready</h3>
-                                        <p class="text-slate-400 text-sm">Easily integrate any web application with our JWT-based authentication system.</p>
+                                    <div class="premium-card rounded-3xl p-8 bg-slate-900/50 border-slate-800 hover:border-amber-500/50 transition-all">
+                                        <h3 class="text-amber-500 font-black text-xs uppercase tracking-widest mb-3">Satellite Ready</h3>
+                                        <p class="text-slate-400 text-sm font-semibold">Easily integrate any web application with our JWT-based authentication system.</p>
                                     </div>
-                                    <div class="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-indigo-500/50 transition-colors">
-                                        <h3 class="text-indigo-400 font-bold mb-2">Secure by Default</h3>
-                                        <p class="text-slate-400 text-sm">Built-in rate limiting, audit logging, and RSA-256 token signing.</p>
+                                    <div class="premium-card rounded-3xl p-8 bg-slate-900/50 border-slate-800 hover:border-amber-500/50 transition-all">
+                                        <h3 class="text-amber-500 font-black text-xs uppercase tracking-widest mb-3">Secure by Default</h3>
+                                        <p class="text-slate-400 text-sm font-semibold">Built-in rate limiting, audit logging, and RSA-256 token signing.</p>
                                     </div>
                                 </div>
                             </div>
@@ -117,9 +117,9 @@
                             <h2 class="text-3xl font-bold text-white mb-6">Core Concepts</h2>
                             <div class="prose prose-invert max-w-none">
                                 <div class="space-y-8">
-                                    <div class="relative pl-8 border-l-2 border-indigo-500">
-                                        <h4 class="text-lg font-bold text-slate-100">1. Single Sign-On (SSO)</h4>
-                                        <p class="text-slate-400">Users log in once to the central Nexus Identity server and gain access to all authorized satellite applications without re-entering credentials.</p>
+                                    <div class="relative pl-8 border-l-2 border-amber-500">
+                                        <h4 class="text-lg font-black text-slate-100 uppercase tracking-tight">1. Single Sign-On (SSO)</h4>
+                                        <p class="text-slate-400 font-semibold">Users log in once to the central Nexus Identity server and gain access to all authorized satellite applications without re-entering credentials.</p>
                                     </div>
                                     <div class="relative pl-8 border-l-2 border-slate-700">
                                         <h4 class="text-lg font-bold text-slate-100">2. JSON Web Token (JWT)</h4>
@@ -194,11 +194,11 @@ public function callback(Request $request)
 
                     @if($activeSection === 'middleware')
                         <section id="middleware">
-                            <h2 class="text-3xl font-bold text-white mb-6">Middleware Setup</h2>
-                            <p class="text-slate-400 mb-8">Force all unauthenticated users to the central login.</p>
+                            <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tight">Middleware Setup</h2>
+                            <p class="text-slate-400 mb-8 font-semibold">Force all unauthenticated users to the central login.</p>
                             
-                            <div class="bg-indigo-600/5 border border-indigo-600/20 rounded-2xl p-8">
-                                <pre class="text-indigo-200 font-mono text-sm leading-relaxed whitespace-pre-wrap">
+                            <div class="bg-amber-600/5 border border-amber-600/20 rounded-3xl p-8 shadow-2xl shadow-amber-900/20">
+                                <pre class="text-amber-200 font-mono text-sm leading-relaxed whitespace-pre-wrap">
 public function handle(Request $request, Closure $next)
 {
     if (auth()->check()) {
@@ -284,19 +284,19 @@ public function handle(Request $request, Closure $next)
                                     </thead>
                                     <tbody class="divide-y divide-slate-800 bg-slate-950/40 text-slate-400">
                                         <tr class="hover:bg-slate-900/50 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-indigo-400">401</td>
-                                            <td class="px-6 py-4 text-slate-200">Unauthorized / Invalid JWT</td>
-                                            <td class="px-6 py-4">Ensure public key matches or token is not expired.</td>
+                                            <td class="px-6 py-4 font-mono text-amber-500 font-bold">401</td>
+                                            <td class="px-6 py-4 text-slate-200 font-bold">Unauthorized / Invalid JWT</td>
+                                            <td class="px-6 py-4 font-medium">Ensure public key matches or token is not expired.</td>
                                         </tr>
                                         <tr class="hover:bg-slate-900/50 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-indigo-400">403</td>
-                                            <td class="px-6 py-4 text-slate-200">Forbidden / No App Access</td>
-                                            <td class="px-6 py-4">Contact admin to grant access for this specific application.</td>
+                                            <td class="px-6 py-4 font-mono text-amber-500 font-bold">403</td>
+                                            <td class="px-6 py-4 text-slate-200 font-bold">Forbidden / No App Access</td>
+                                            <td class="px-6 py-4 font-medium">Contact admin to grant access for this specific application.</td>
                                         </tr>
                                         <tr class="hover:bg-slate-900/50 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-indigo-400">422</td>
-                                            <td class="px-6 py-4 text-slate-200">Validation Failure</td>
-                                            <td class="px-6 py-4">Check for missing redirect params or malformed payloads.</td>
+                                            <td class="px-6 py-4 font-mono text-amber-500 font-bold">422</td>
+                                            <td class="px-6 py-4 text-slate-200 font-bold">Validation Failure</td>
+                                            <td class="px-6 py-4 font-medium">Check for missing redirect params or malformed payloads.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -317,13 +317,13 @@ public function handle(Request $request, Closure $next)
                                     ];
                                 @endphp
                                 @foreach($tips as $tip)
-                                    <div class="flex items-start gap-4 p-6 rounded-2xl bg-indigo-600/5 border border-indigo-600/10">
-                                        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 flex items-center justify-center shrink-0">
-                                            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                    <div class="flex items-start gap-4 p-6 rounded-2xl bg-amber-600/5 border border-amber-600/10">
+                                        <div class="w-10 h-10 rounded-xl bg-amber-600/20 flex items-center justify-center shrink-0">
+                                            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                         </div>
                                         <div>
-                                            <h4 class="font-bold text-slate-200">{{ $tip['title'] }}</h4>
-                                            <p class="text-sm text-slate-400 leading-relaxed">{{ $tip['desc'] }}</p>
+                                            <h4 class="font-black text-slate-200 uppercase tracking-tight">{{ $tip['title'] }}</h4>
+                                            <p class="text-sm text-slate-400 font-semibold leading-relaxed">{{ $tip['desc'] }}</p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -364,15 +364,15 @@ public function handle(Request $request, Closure $next)
                                 @endforeach
                             </div>
 
-                            <div class="mt-12 p-8 rounded-3xl bg-indigo-600/5 border border-indigo-600/10">
-                                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                                    <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                            <div class="mt-12 p-8 rounded-3xl bg-amber-600/5 border border-amber-600/10">
+                                <h3 class="text-xl font-black text-white mb-4 flex items-center gap-3 uppercase tracking-tight">
+                                    <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
                                     Token Management
                                 </h3>
-                                <p class="text-slate-400 mb-6 leading-relaxed">
+                                <p class="text-slate-400 mb-6 font-semibold leading-relaxed">
                                     To interact with our APIs or integrate satellite applications, you'll need to generate and manage API tokens. You can create tokens with specific scopes and rotation policies via the user profile.
                                 </p>
-                                <a href="{{ route('profile.api-tokens') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-colors">
+                                <a href="{{ route('profile.api-tokens') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-600 text-white font-black uppercase tracking-widest text-[10px] hover:bg-amber-500 transition-colors shadow-lg shadow-amber-600/20">
                                     Manage My API Tokens
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </a>

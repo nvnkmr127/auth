@@ -1,11 +1,18 @@
 <div class="px-4 py-8">
     <!-- Header -->
-    <div class="mb-12">
-        <h1 class="text-3xl tracking-tight text-slate-900 mb-2 leading-tight">
-            API <span class="text-primary">Tokens</span>
-        </h1>
-        <p class="text-sm font-semibold text-slate-500">Manage your API tokens to securely access our services from your
-            own applications.</p>
+    <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <h1 class="text-3xl tracking-tight text-slate-900 mb-2 leading-tight uppercase font-black tracking-tight">
+                API <span class="text-primary italic">Tokens</span>
+            </h1>
+            <p class="text-sm font-semibold text-slate-500 max-w-xl">Manage your API tokens to securely access our services. Each token provides authenticated access to our developer APIs.</p>
+        </div>
+        <div class="shrink-0">
+            <a href="{{ route('docs') }}" class="inline-flex items-center gap-3 px-6 py-4 bg-primary/10 text-primary border border-primary/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 group">
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                View Documentation
+            </a>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">

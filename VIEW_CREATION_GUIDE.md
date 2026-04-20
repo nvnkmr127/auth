@@ -930,53 +930,6 @@ resources/
 
 ---
 
-## Navigating & Linking Between Views
-
-### 1. Using Named Routes
-Always prefer named routes over hardcoded paths. This is the "App URL" pattern used across the system.
-
-**In Blade Templates:**
-```blade
-<!-- Simple Link -->
-<a href="{{ route('admin.users') }}" class="text-blue-600">View Users</a>
-
-<!-- Link with Parameters -->
-<a href="{{ route('admin.user.apps', ['user' => $user->id]) }}" class="btn">
-    Manage Access
-</a>
-```
-
-**In Livewire Components:**
-```php
-// Standard redirect
-return $this->redirect(route('dashboard'));
-
-// Redirect with flash message
-session()->flash('message', 'Profile updated!');
-return $this->redirect(route('profile.security'));
-
-// Open external app via SSO
-return redirect()->route('apps.open', ['app' => $app->id]);
-```
-
-### 2. Handling Redirects for SSO
-When building custom login or logout logic, handle the `redirect` parameter to support seamless SSO flow.
-
-```php
-public function logout(Request $request)
-{
-    Auth::logout();
-    
-    $target = $request->query('redirect', '/');
-    return redirect($target);
-}
-```
-
-### 3. Dynamic Sidebar Links
-The sidebar components typically iterate over a configured list of routes. Ensure your new view's route name is added to the relevant navigation component.
-
----
-
 ## Troubleshooting
 
 | Issue | Solution |

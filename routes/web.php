@@ -10,6 +10,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/docs', \App\Livewire\Admin\Docs\ApiDocumentation::class)->name('docs');
+
 // Apply rate limiting to login route
 Route::get('/login', LoginForm::class)->name('login')->middleware(['guest', 'throttle:login']);
 
@@ -68,10 +70,6 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\AdminMiddleware
     Route::get('/apps', \App\Livewire\Admin\AppManager::class)->name('apps');
     Route::get('/sso-sessions', \App\Livewire\Admin\SsoSessions::class)->name('sso-sessions');
     Route::get('/settings', \App\Livewire\Admin\SettingsManager::class)->name('settings');
-    
-    // Documentation Routes
-    Route::get('/docs/api', \App\Livewire\Admin\Docs\ApiDocumentation::class)->name('docs.api');
-    Route::get('/docs/views', \App\Livewire\Admin\Docs\ViewCreationGuide::class)->name('docs.views');
 });
 
 Route::get('/sso/callback', \App\Livewire\SsoLoginHandler::class)->name('sso.callback');

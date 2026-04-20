@@ -435,12 +435,11 @@ curl -X GET http://localhost:8000/apps/1/open \
   "name": "CRM System",
   "slug": "crm",
   "domain": "https://crm.example.com",
+  "callback_url": "https://crm.example.com/sso/callback",
   "status": "active",
   "created_at": "2026-01-15T10:30:00Z"
 }
 ```
-> [!NOTE]
-> The `callback_url` is automatically constructed by appending `/sso/callback` to the configured `domain`.
 
 ---
 
@@ -779,45 +778,6 @@ RateLimiter::for('login', function (Request $request) {
 8. **Use short expiration times** (default 60 seconds) for tokens
 9. **Implement JTI blacklisting** for replay attack prevention
 10. **Sync server clocks** via NTP to avoid JWT expiration issues
-
----
-
-## URL Construction & App-Wide Links
-
-### 1. Generating Internal Links
-Always use the Laravel `route()` helper to generate URLs. This ensures links remain valid even if the URL structure changes.
-
-```php
-// In a Blade view
-<a href="{{ route('dashboard') }}">Dashboard</a>
-<a href="{{ route('admin.users') }}">Manage Users</a>
-
-// In a Livewire component
-$this->redirect(route('apps.index'));
-```
-
-### 2. SSO Redirect Patterns
-When redirecting users for SSO, the hub expects specific patterns:
-
-**Initiating Login with Redirect:**
-```
-GET /login?redirect=https://crm.example.com/dashboard
-```
-*Note: The redirect domain must be whitelisted in the hub's `allowed_redirect_domains` configuration.*
-
-**Opening a Satellite App:**
-```php
-// Programmatic redirect to open an app (e.g. from AppSelector)
-return redirect()->route('apps.open', ['app' => $appId]);
-```
-
-### 3. Dynamic App URLs
-For applications registered in the hub, the base URL is stored in the `domain` field. The system automatically handles formatting and appended paths.
-
-| Format | Output |
-|--------|--------|
-| `example.com` | `https://example.com/sso/callback` |
-| `http://dev.local:8080` | `http://dev.local:8080/sso/callback` |
 
 ---
 

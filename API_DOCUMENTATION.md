@@ -18,8 +18,7 @@ Complete guide to using the Nexus Identity authentication system, including endp
 
 ### Base URL
 ```
-http://localhost:8000  # Development
-https://auth.example.com  # Production
+https://login.onestudio.co.in/  # Production
 ```
 
 ### API Architecture

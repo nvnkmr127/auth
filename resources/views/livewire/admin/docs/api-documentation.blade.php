@@ -20,6 +20,7 @@
 
                 <nav class="space-y-1">
                     @php
+                        $appUrl = 'https://login.onestudio.co.in/';
                         $navItems = [
                             ['id' => 'introduction', 'label' => 'Introduction', 'icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
                             ['id' => 'concepts', 'label' => 'Core Concepts', 'icon' => 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
@@ -45,6 +46,18 @@
                     @endforeach
 
                     <div class="pt-4 mt-4 border-t border-slate-800/50">
+                        <a 
+                            href="{{ $appUrl }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-200 group rounded-xl border border-transparent"
+                        >
+                            <svg class="w-5 h-5 text-slate-500 group-hover:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-1.5-7.5h4.5m0 0v4.5m0-4.5L10.5 13.5" />
+                            </svg>
+                            Open Login URL
+                        </a>
+
                         <a 
                             href="{{ route('profile.api-tokens') }}"
                             class="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-200 group rounded-xl border border-transparent"
@@ -98,6 +111,16 @@
                                 <p class="text-xl text-slate-400 leading-relaxed mb-8">
                                     Welcome to the Nexus Identity API documentation. This platform provides a centralized Single Sign-On (SSO) solution for all satellite applications.
                                 </p>
+                                <div class="mb-8 p-4 rounded-2xl bg-slate-900/60 border border-amber-500/20 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                                    <div>
+                                        <p class="text-[10px] font-black text-amber-500 uppercase tracking-[0.2em] mb-1">Live App URL</p>
+                                        <p class="text-sm font-semibold text-slate-200 break-all">{{ $appUrl }}</p>
+                                    </div>
+                                    <a href="{{ $appUrl }}" target="_blank" rel="noopener noreferrer"
+                                        class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-black uppercase tracking-wider hover:bg-amber-500 transition-colors">
+                                        Open URL
+                                    </a>
+                                </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                                     <div class="premium-card rounded-3xl p-8 bg-slate-900/50 border-slate-800 hover:border-amber-500/50 transition-all">
                                         <h3 class="text-amber-500 font-black text-xs uppercase tracking-widest mb-3">Satellite Ready</h3>
@@ -154,7 +177,7 @@
                                     </h3>
                                     <div class="relative group">
                                         <pre class="bg-slate-900 border border-slate-800 rounded-2xl p-6 overflow-x-auto text-slate-300 font-mono text-sm leading-relaxed shadow-2xl">
-AUTH_CORE_URL=https://auth.example.com
+AUTH_CORE_URL={{ $appUrl }}
 AUTH_CORE_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
 ...
 -----END PUBLIC KEY-----"</pre>

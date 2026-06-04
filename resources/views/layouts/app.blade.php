@@ -129,6 +129,16 @@
                                     </svg>
                                     API Documentation
                                 </a>
+
+                                <a href="https://login.onestudio.co.in/" target="_blank" rel="noopener noreferrer"
+                                    class="group flex items-center px-3 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 text-slate-400 hover:text-white hover:bg-white/5">
+                                    <svg class="mr-3 h-5 w-5 text-slate-500 group-hover:text-slate-300" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-1.5-7.5h4.5m0 0v4.5m0-4.5L10.5 13.5" />
+                                    </svg>
+                                    Open Login URL
+                                </a>
                             </div>
                         </div>
 

@@ -64,6 +64,10 @@
                                 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Workspaces</span>
                         </th>
                         <th scope="col" class="px-6 py-6 text-left">
+                            <span
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Global Roles</span>
+                        </th>
+                        <th scope="col" class="px-6 py-6 text-left">
                             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Last
                                 Active</span>
                         </th>
@@ -99,6 +103,17 @@
                                         class="px-3 py-1 rounded-lg bg-primary-light text-[10px] font-black text-primary border border-primary/10 tracking-widest uppercase">
                                         {{ $user->app_accesses_count }} NODES
                                     </span>
+                                </div>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-6">
+                                <div class="flex flex-wrap gap-1.5 max-w-[220px]">
+                                    @forelse($user->roles as $role)
+                                        <span class="px-2.5 py-1 rounded-lg text-[9px] font-black tracking-wider uppercase border {{ $role->key === 'super_admin' ? 'bg-primary-light text-primary border-primary/10' : ($role->key === 'org_admin' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-slate-100 text-slate-600 border-slate-200') }}">
+                                            {{ $role->name }}
+                                        </span>
+                                    @empty
+                                        <span class="text-[10px] font-black text-slate-300 uppercase tracking-tight">No Global Roles</span>
+                                    @endforelse
                                 </div>
                             </td>
                             <td class="whitespace-nowrap px-6 py-6">
@@ -263,6 +278,33 @@
                             <p class="text-[10px] text-slate-400 font-medium ml-1 mt-2"> Leave password fields empty to keep
                                 the current password.</p>
                         @endif
+
+                        <div class="border-t border-slate-100 pt-6">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Assigned Global Roles</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                @foreach($globalRoles as $role)
+                                    <label wire:key="role-opt-{{ $role->id }}"
+                                        class="relative flex items-start p-4 bg-slate-50 border border-transparent rounded-2xl hover:border-primary/20 hover:bg-white hover:shadow-lg transition-all cursor-pointer group">
+                                        <div class="flex h-5 items-center">
+                                            <input wire:model="selectedRoles" value="{{ $role->id }}"
+                                                type="checkbox"
+                                                class="h-5 w-5 rounded-lg border-slate-200 text-primary focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer">
+                                        </div>
+                                        <div class="ml-3 flex flex-col">
+                                            <span class="text-[10px] font-black text-slate-900 uppercase tracking-tight group-hover:text-primary transition-colors">
+                                                {{ $role->name }}
+                                            </span>
+                                            <span class="text-[8px] text-slate-400 font-medium mt-0.5 leading-normal">
+                                                {{ $role->description }}
+                                            </span>
+                                        </div>
+                                    </label>
+                                @endforeach
+                            </div>
+                            @error('selectedRoles')
+                                <span class="text-rose-500 text-[10px] font-bold mt-2 block ml-1 uppercase">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 

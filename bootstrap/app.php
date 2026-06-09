@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectUsersTo('/apps');
         $middleware->append(\App\Http\Middleware\CheckAppAccess::class);
+        $middleware->alias([
+            'auth.api.token' => \App\Http\Middleware\ApiTokenMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

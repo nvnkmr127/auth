@@ -85,7 +85,7 @@ class LoginForm extends Component
         // Simple Geolocation (Optional/Best Effort)
         $location = 'Unknown';
         try {
-            $response = \Illuminate\Support\Facades\Http::withTimeout(5)
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
                 ->get("https://ip-api.com/json/{$ip}");
             if ($response->successful()) {
                 $geo = $response->json();

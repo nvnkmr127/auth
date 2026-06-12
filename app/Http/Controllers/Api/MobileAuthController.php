@@ -41,6 +41,11 @@ class MobileAuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        if (!$user->is_active) {
+            $this->logAuthAction($user->id, 'failed_login_inactive', $request);
+            return response()->json(['status' => 'inactive', 'message' => 'User account is disabled'], 403);
+        }
+
         // Register or update device
         $device = MobileDevice::updateOrCreate(
             ['device_uuid' => $request->device_uuid],
@@ -103,6 +108,15 @@ class MobileAuthController extends Controller
         }
 
         $user = User::find($session->user_id);
+        
+        if (!$user || !$user->is_active) {
+            if ($session) {
+                $this->logAuthAction($session->user_id, 'revoked_inactive', $request);
+                $session->delete();
+            }
+            return response()->json(['status' => 'inactive', 'message' => 'User account is disabled'], 403);
+        }
+
         $device = MobileDevice::where('device_uuid', $request->device_uuid)->first();
 
         $tokens = $this->generateTokens($user, $device);

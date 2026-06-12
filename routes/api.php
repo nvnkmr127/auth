@@ -65,3 +65,13 @@ Route::middleware('auth.api.token')->group(function () {
         return response()->json($request->user());
     });
 });
+
+// Mobile SSO Endpoints
+use App\Http\Controllers\Api\MobileAuthController;
+
+Route::prefix('mobile/v1/auth')->group(function () {
+    Route::post('/login', [MobileAuthController::class, 'login']);
+    Route::post('/refresh', [MobileAuthController::class, 'refresh']);
+    Route::post('/logout', [MobileAuthController::class, 'logout']); // In production, add auth middleware
+    Route::post('/revoke-session', [MobileAuthController::class, 'revokeSession']); // Admin / authenticated route
+});

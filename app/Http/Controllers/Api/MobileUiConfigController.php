@@ -6,25 +6,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\MobileNavigationService;
 use App\Services\DashboardService;
-use App\Services\AccessSyncService;
+use App\Services\PolicyEngine;
 use App\Services\AppRegistryService;
 
 class MobileUiConfigController extends Controller
 {
     private $navigationService;
     private $dashboardService;
-    private $syncService;
+    private $policyEngine;
     private $appRegistryService;
 
     public function __construct(
-        MobileNavigationService $navigationService, 
+        MobileNavigationService $navigationService,
         DashboardService $dashboardService,
-        AccessSyncService $syncService,
+        PolicyEngine $policyEngine,
         AppRegistryService $appRegistryService
     ) {
         $this->navigationService = $navigationService;
         $this->dashboardService = $dashboardService;
-        $this->syncService = $syncService;
+        $this->policyEngine = $policyEngine;
         $this->appRegistryService = $appRegistryService;
     }
 
@@ -56,14 +56,33 @@ class MobileUiConfigController extends Controller
     public function sync(Request $request)
     {
         $request->validate(['workspace_id' => 'required|integer']);
-        
-        $syncData = $this->syncService->sync($request->user(), $request->workspace_id);
-        
-        if ($syncData['status'] === 'inactive') {
-            return response()->json($syncData, 403);
+
+        $user = $request->user();
+        $workspaceId = $request->workspace_id;
+
+        if (!$user->is_active) {
+            return response()->json(['status' => 'inactive', 'action' => 'force_logout'], 403);
         }
-        
-        return response()->json($syncData);
+
+        // Access to the current workspace revoked
+        if (!$this->policyEngine->canAccessWorkspace($user, $workspaceId)) {
+            return response()->json(['status' => 'active', 'action' => 'workspace_revoked']);
+        }
+
+        $navigation = $this->navigationService->buildNavigation($user, $workspaceId);
+        $widgets = $this->dashboardService->getWidgets($user, $workspaceId);
+
+        return response()->json([
+            'status' => 'active',
+            'action' => 'update_context',
+            'context' => [
+                'workspace_id' => $workspaceId,
+                'navigation' => $navigation,
+                'dashboard' => $widgets,
+                // Lets mobile detect whether permissions changed
+                'sync_hash' => md5(json_encode([$navigation, $widgets])),
+            ],
+        ]);
     }
 
     public function settings(Request $request)

@@ -60,47 +60,49 @@ class MobileWorkspaceController extends Controller
 
         $app = App::where('status', 'active')->findOrFail($id);
 
-        // Map allowed applications based on roles/permissions for this app context
-        // This makes the mobile applications dynamic based on the web structure
-        $applications = [];
-
-        // Example: If they have CRM access (or implicitly part of the workspace)
-        $applications[] = [
-            'name' => 'CRM',
-            'slug' => 'crm'
-        ];
-
-        // If they have estimates permissions, add Estimator app
-        if ($user->hasPermission('estimates.view', $app->id)) {
-            $applications[] = [
-                'name' => 'Estimator',
-                'slug' => 'estimator'
-            ];
-        }
-
-        // Load permissions specific to this workspace
-        $permissions = [];
-        if ($user->isAdmin()) {
-            $permissions = ['*'];
-        } else {
-            // Fetch roles and their permissions for this app
-            $roles = $user->roles()->where('app_id', $app->id)->orWhere('is_global', true)->with('permissions')->get();
-            foreach ($roles as $role) {
-                foreach ($role->permissions as $permission) {
-                    $permissions[] = $permission->key;
-                }
-            }
-            $permissions = array_values(array_unique($permissions));
-        }
-
         return response()->json([
             'workspace' => [
                 'id' => $app->id,
                 'name' => $app->name . ' Workspace',
             ],
-            'applications' => $applications,
-            'permissions' => $permissions
+            'applications' => $this->applicationsFor($user, $app),
+            'permissions' => $this->permissionsFor($user, $app),
         ]);
+    }
+
+    /**
+     * Allowed mobile applications for a user within an app (workspace) context.
+     */
+    private function applicationsFor($user, App $app): array
+    {
+        $applications = [['name' => 'CRM', 'slug' => 'crm']];
+
+        if ($user->hasPermission('estimates.view', $app->id)) {
+            $applications[] = ['name' => 'Estimator', 'slug' => 'estimator'];
+        }
+
+        return $applications;
+    }
+
+    /**
+     * Flattened permission keys for a user within an app (workspace) context.
+     */
+    private function permissionsFor($user, App $app): array
+    {
+        if ($user->isAdmin()) {
+            return ['*'];
+        }
+
+        $roles = $user->roles()->where('app_id', $app->id)->orWhere('is_global', true)->with('permissions')->get();
+
+        $permissions = [];
+        foreach ($roles as $role) {
+            foreach ($role->permissions as $permission) {
+                $permissions[] = $permission->key;
+            }
+        }
+
+        return array_values(array_unique($permissions));
     }
 
     /**
@@ -127,45 +129,15 @@ class MobileWorkspaceController extends Controller
 
         $app = App::where('status', 'active')->findOrFail($workspaceId);
 
-        // In a real scenario, you might update the user's current session to reflect the active workspace.
-        // For stateless JWTs, we just return the new context data (permissions, apps).
-
-        // Get allowed applications for this newly switched workspace
-        $applications = [];
-        $applications[] = [
-            'name' => 'CRM',
-            'slug' => 'crm'
-        ];
-
-        if ($user->hasPermission('estimates.view', $app->id)) {
-            $applications[] = [
-                'name' => 'Estimator',
-                'slug' => 'estimator'
-            ];
-        }
-
-        // Load permissions specific to this workspace
-        $permissions = [];
-        if ($user->isAdmin()) {
-            $permissions = ['*'];
-        } else {
-            $roles = $user->roles()->where('app_id', $app->id)->orWhere('is_global', true)->with('permissions')->get();
-            foreach ($roles as $role) {
-                foreach ($role->permissions as $permission) {
-                    $permissions[] = $permission->key;
-                }
-            }
-            $permissions = array_values(array_unique($permissions));
-        }
-
+        // For stateless JWTs we just return the new context data (permissions, apps).
         return response()->json([
             'message' => 'Workspace switched successfully',
             'workspace' => [
                 'id' => $app->id,
                 'name' => $app->name . ' Workspace',
             ],
-            'applications' => $applications,
-            'permissions' => $permissions
+            'applications' => $this->applicationsFor($user, $app),
+            'permissions' => $this->permissionsFor($user, $app),
         ]);
     }
 }

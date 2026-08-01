@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
 
 class SetupJwtKeys extends Command
 {
@@ -39,27 +38,22 @@ class SetupJwtKeys extends Command
             return;
         }
 
-        $this->info('Generating RSA Private Key...');
+        $this->info('Generating RSA key pair...');
 
-        $process = new Process(['openssl', 'genrsa', '-out', $privateKeyPath, '4096']);
-        $process->run();
+        $key = openssl_pkey_new([
+            'private_key_bits' => 4096,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
 
-        if (!$process->isSuccessful()) {
-            $this->error('Failed to generate private key.');
-            $this->error($process->getErrorOutput());
+        if ($key === false || !openssl_pkey_export($key, $privateKey)) {
+            $this->error('Failed to generate private key: ' . openssl_error_string());
             return;
         }
 
-        $this->info('Generating RSA Public Key...');
+        $publicKey = openssl_pkey_get_details($key)['key'];
 
-        $process = new Process(['openssl', 'rsa', '-in', $privateKeyPath, '-pubout', '-out', $publicKeyPath]);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $this->error('Failed to generate public key.');
-            $this->error($process->getErrorOutput());
-            return;
-        }
+        file_put_contents($privateKeyPath, $privateKey);
+        file_put_contents($publicKeyPath, $publicKey);
 
         // Set permissions
         chmod($privateKeyPath, 0600);
